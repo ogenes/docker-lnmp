@@ -1,0 +1,26 @@
+server {
+    listen  80;
+
+    server_name  default.dev.com;
+    root   /var/www/test;
+    index  index.php index.html index.htm;
+
+    #access_log  /var/log/nginx/log/host.access.log  main;
+    error_log /var/log/nginx/default.error.log;
+    access_log /var/log/nginx/default.access.log main;
+
+    location / {
+        try_files $uri $uri/ /index.php$is_args$query_string;
+    }
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        #fastcgi_pass unix:/var/run/php-fpm.sock;
+        fastcgi_pass php:9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+        fastcgi_index index.php;
+        include fastcgi_params;
+    }
+}
