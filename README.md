@@ -14,6 +14,7 @@ git clone https://github.com/ogenes/docker-lnmp.git
 ### 三. RUN
 ```shell
 cd docker-lnmp
+cp .env.example .env
 cp php/config/php.ini.example php/config/php.ini
 cp nginx/conf.d/default.conf.example nginx/conf.d/default.conf
 docker-compose up -d
