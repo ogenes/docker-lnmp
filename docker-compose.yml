@@ -16,7 +16,7 @@ services:
       #- ./nginx/nginx.conf:/etc/nginx/nginx.conf
       # server
       - ./nginx/conf.d:/etc/nginx/conf.d
-      # nginx访问路径
+      # 项目代码
       - ../:/var/www/
       # nginx日志
       - ./logs/nginx/:/var/log/nginx/
