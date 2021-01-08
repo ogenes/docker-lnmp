@@ -2,7 +2,7 @@ server {
     listen  80;
 
     server_name  default.dev.com;
-    root   /var/www/test;
+    root   /var/www/default;
     index  index.php index.html index.htm;
 
     #access_log  /var/log/nginx/log/host.access.log  main;
