@@ -4,7 +4,7 @@ services:
   ### NGINX ################################################
   nginx:
     build: ./nginx
-    container_name: nginx114
+    container_name: nginx
     privileged: true
     ports:
       - "${NGINX_HOST_HTTP_PORT}:80"
@@ -17,7 +17,7 @@ services:
       # server
       - ./nginx/conf.d:/etc/nginx/conf.d
       # 项目代码
-      - ../:/var/www/
+      - ./www:/var/www/
       # nginx日志
       - ./logs/nginx/:/var/log/nginx/
     networks:
@@ -27,7 +27,7 @@ services:
   ### MySQL ################################################
   mysql:
     image: mysql:5.7
-    container_name: mysql57
+    container_name: mysql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
@@ -48,7 +48,7 @@ services:
   php:
     build:
       context: ./php
-    container_name: php7
+    container_name: php
     privileged: true
     cap_add:
       - SYS_PTRACE
@@ -61,10 +61,9 @@ services:
       - "default.dev.com:${NGINX_IP}"
     volumes:
       # 项目代码
-      - ../:/var/www/
+      - ./www:/var/www/
       # php 配置文件
       - ./php/config/php.ini:/usr/local/etc/php/php.ini
-#      - ./php/config/conf.d:/usr/local/etc/php/conf.d
       # php-fpm 配置文件
       - ./php/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
       - ./php/config/php-fpm.d:/usr/local/etc/php-fpm.d
@@ -77,7 +76,7 @@ services:
   ### Redis ################################################
   redis:
     image: redis
-    container_name: redis5
+    container_name: redis
     command: redis-server /etc/redis/redis.conf
     ports:
       - "6379:6379"
