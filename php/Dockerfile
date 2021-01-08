@@ -1,4 +1,5 @@
-FROM php:7.4-fpm
+ARG PHP_VERSION
+FROM php:${PHP_VERSION}-fpm
 
 # 复制时区配置
 ENV TZ=Asia/Shanghai
@@ -57,24 +58,30 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
         zip \
         soap \
         exif \
-  && docker-php-ext-configure gd \
-    --with-jpeg=/usr/lib \
-    --with-freetype=/usr/include/freetype2 && \
-    docker-php-ext-install gd \
   && docker-php-ext-install opcache \
   && docker-php-ext-enable opcache
 
+RUN if [ ${PHP_VERSION} = 7.2 ] || [ ${PHP_VERSION} = 7.3 ]; then \
+    docker-php-ext-configure gd \
+        --with-jpeg-dir=/usr/lib \
+        --with-freetype-dir=/usr/include/freetype2 && \
+        docker-php-ext-install gd \
+;fi
+
+RUN if [ ${PHP_VERSION} = 7.4 ] || [ ${PHP_VERSION} = 8.0 ]; then \
+    docker-php-ext-configure gd \
+    --with-jpeg=/usr/lib \
+    --with-freetype=/usr/include/freetype2 && \
+    docker-php-ext-install gd \
+;fi
+
 # 安装 Redis 扩展
-RUN cd /tmp \
-    && wget https://github.com/edtechd/phpredis/archive/php7.zip \
-    && unzip php7.zip \
-    && cd phpredis-php7 \
-    && phpize \
-    && ./configure --with-php-config=/usr/local/bin/php-config  \
-    && make && make install \
-	&& echo "extension=redis.so" > /usr/local/etc/php/conf.d/docker-php-ext-redis.ini \
-	&& rm -rf /tmp/phpredis-php7 \
-	&& rm /tmp/php7.zip
+ARG PHP_INSTALL_REDIS
+RUN if [ ${PHP_INSTALL_REDIS} = true ]; then \
+  pecl install -o -f redis \
+  && rm -rf /tmp/pear \
+  && docker-php-ext-enable redis \
+;fi
 
 # 安装 Composer
 ENV COMPOSER_HOME /var/www/.composer
