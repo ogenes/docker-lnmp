@@ -1,5 +1,6 @@
 FROM nginx:1.14
 
+LABEL maintainer="ogenes.yi@gmail.com"
 # 更改权限
 RUN mkdir /var/www \
     && chown -R www-data:www-data /var/www/ /var/log/nginx/

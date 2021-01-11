@@ -1,5 +1,7 @@
-ARG PHP_VERSION
-FROM php:${PHP_VERSION}-fpm
+ARG VERSION
+FROM php:${VERSION}-fpm
+
+LABEL maintainer="ogenes.yi@gmail.com"
 
 # 复制时区配置
 ENV TZ=Asia/Shanghai
@@ -61,19 +63,14 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
   && docker-php-ext-install opcache \
   && docker-php-ext-enable opcache
 
-RUN if [ ${PHP_VERSION} = 7.2 ] || [ ${PHP_VERSION} = 7.3 ]; then \
-    docker-php-ext-configure gd \
-        --with-jpeg-dir=/usr/lib \
-        --with-freetype-dir=/usr/include/freetype2 && \
-        docker-php-ext-install gd \
-;fi
-
-RUN if [ ${PHP_VERSION} = 7.4 ] || [ ${PHP_VERSION} = 8.0 ]; then \
-    docker-php-ext-configure gd \
-    --with-jpeg=/usr/lib \
-    --with-freetype=/usr/include/freetype2 && \
-    docker-php-ext-install gd \
-;fi
+ARG VERSION
+RUN if [ "$VERSION" = "7.1" ] || [ "$VERSION" = "7.2" ] || [ "$VERSION" = "7.3" ]; then \
+    docker-php-ext-configure gd --with-jpeg-dir=/usr/lib --with-freetype-dir=/usr/include/freetype2 && \
+    docker-php-ext-install gd; \
+elif [ "$VERSION" = "7.4" ] || [ "$VERSION" = "8.0" ]; then \
+    docker-php-ext-configure gd --with-jpeg=/usr/lib --with-freetype=/usr/include/freetype2 && \
+    docker-php-ext-install gd; \
+fi
 
 # 安装 Redis 扩展
 ARG PHP_INSTALL_REDIS

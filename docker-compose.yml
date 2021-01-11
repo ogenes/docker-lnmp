@@ -25,7 +25,10 @@ services:
 
   ### MySQL ################################################
   mysql:
-    image: mysql:${MYSQL_VERSION}
+    build:
+      context: ./mysql
+      args:
+        - VERSION=${MYSQL_VERSION}
     container_name: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -49,7 +52,7 @@ services:
     build:
       context: ./php
       args:
-        - PHP_VERSION=${PHP_VERSION}
+        - VERSION=${PHP_VERSION}
         - PHP_INSTALL_REDIS=${PHP_INSTALL_REDIS}
     container_name: php
     privileged: true
@@ -77,7 +80,10 @@ services:
 
   ### Redis ################################################
   redis:
-    image: redis
+    build:
+      context: ./redis
+      args:
+        - VERSION=${REDIS_VERSION}
     container_name: redis
     command: redis-server /etc/redis/redis.conf
     ports:
