@@ -65,20 +65,17 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
 
 ARG VERSION
 RUN if [ "$VERSION" = "7.1" ] || [ "$VERSION" = "7.2" ] || [ "$VERSION" = "7.3" ]; then \
-    docker-php-ext-configure gd --with-jpeg-dir=/usr/lib --with-freetype-dir=/usr/include/freetype2 && \
-    docker-php-ext-install gd; \
+    docker-php-ext-configure gd --with-jpeg-dir=/usr/lib --with-freetype-dir=/usr/include/freetype2 \
+    && docker-php-ext-install gd; \
 elif [ "$VERSION" = "7.4" ] || [ "$VERSION" = "8.0" ]; then \
-    docker-php-ext-configure gd --with-jpeg=/usr/lib --with-freetype=/usr/include/freetype2 && \
-    docker-php-ext-install gd; \
+    docker-php-ext-configure gd --with-jpeg=/usr/lib --with-freetype=/usr/include/freetype2 \
+    && docker-php-ext-install gd; \
 fi
 
 # 安装 Redis 扩展
-ARG PHP_INSTALL_REDIS
-RUN if [ ${PHP_INSTALL_REDIS} = true ]; then \
-  pecl install -o -f redis \
+RUN pecl install -o -f redis \
   && rm -rf /tmp/pear \
-  && docker-php-ext-enable redis \
-;fi
+  && docker-php-ext-enable redis
 
 # 安装 Composer
 ENV COMPOSER_HOME /var/www/.composer

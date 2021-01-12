@@ -9,7 +9,7 @@ services:
     ports:
       - ${NGINX_HOST_HTTP_PORT}:80
       - ${NGINX_HOST_HTTPS_PORT}:443
-    links:
+    depends_on:
       - "php"
     volumes:
       # nginx默认配置文件
@@ -53,16 +53,15 @@ services:
       context: ./php
       args:
         - VERSION=${PHP_VERSION}
-        - PHP_INSTALL_REDIS=${PHP_INSTALL_REDIS}
     container_name: php
     privileged: true
     cap_add:
       - SYS_PTRACE
     ports:
       - 9000:9000
-    depends_on:
-      - "mysql"
+    links:
       - "redis"
+      - "mysql"
     extra_hosts:
       - "default.dev.com:${NGINX_IP}"
     volumes:
@@ -90,7 +89,7 @@ services:
       - ${REDIS_PORT}:6379
     volumes:
       - ${REDIS_DATA_PATH}:/data
-      - ./redis/redis.conf:/etc/redis/redis.conf
+      - ${REDIS_CONF_PATH}:/etc/redis/redis.conf
     networks:
       backend:
         ipv4_address: ${REDIS_IP}

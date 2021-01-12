@@ -6,4 +6,3 @@
 .DS_Store
 
 /nginx/conf.d/*.conf
-/php/config/php.ini
