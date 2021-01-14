@@ -4,7 +4,7 @@
 3. MySQL 支持 5.7 、8.0 版本；
 4. Redis 支持 4.0 、5.0 、6.0 版本；
 
-### 一. [docker install](https://github.com/ogenes/docker-lnmp/wiki/Docker-%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%AE%89%E8%A3%85)
+### 一. [install docker](https://github.com/ogenes/docker-lnmp/wiki/Docker-%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%AE%89%E8%A3%85)
 
 ```
 $ docker -v
@@ -18,7 +18,7 @@ docker-compose version 1.25.5, build 8a1c60f6
 ### 二. download
 ```$xslt
 $ pwd
-/d/www
+/d/app
 $ git clone https://github.com/ogenes/docker-lnmp.git
 ```
 ### 三. init
@@ -36,15 +36,19 @@ ba864491ac22        docker-lnmp_mysql   "docker-entrypoint.s…"   22 minutes ag
 68ca3dcdf667        docker-lnmp_nginx   "nginx -g 'daemon of…"   42 minutes ago      Up 3 seconds        0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   nginx
 9e46003ebe39        docker-lnmp_php     "docker-php-entrypoi…"   42 minutes ago      Up 4 seconds        0.0.0.0:9000->9000/tcp                     php
 e1c96bbea465        docker-lnmp_redis   "docker-entrypoint.s…"   51 minutes ago      Up 5 seconds        0.0.0.0:6379->6379/tcp                     redis
+```
 
+### 五. test
+```
 $ cp nginx/conf.d/default.conf.example nginx/conf.d/default.conf
 
 #绑定本机hosts
 127.0.0.1 default.dev.com
 
+```
 访问 http://default.dev.com/ 得到响应 Hello Ogenes! 表示运行成功。
 
-```
+![QQ截图20210114105752.png](https://i.loli.net/2021/01/14/NPTJhEgcszFZaOp.png)
 
 ### 五. note
     默认版本为：
@@ -52,8 +56,25 @@ $ cp nginx/conf.d/default.conf.example nginx/conf.d/default.conf
     MySQL 5.7
     Redis 5.0
     可以通过修改 env 文件的 PHP_VERSION 、MYSQL_VERSION 、REDIS_VERSION 来选择其他版本
+    MySQL 和 Redis 切换版本时，注意切换配置文件
     
     项目目录默认为 docker-lnmp/www 目录
     可以通过修改 env 文件的 WEB_ROOT_PATH 来指定其他目录
 
     nginx 虚拟主机配置文件在 docker-lnmp/nginx/conf.d 目录内， 可以参考 default 项目配置。
+
+### 六. restart | stop | start | rebuild
+
+```shell script
+
+#修改配置文件后重启即可
+$ docker-compose restart nginx php
+Restarting nginx ... done
+Restarting php   ... done
+
+#修改 dockerfile 或者 env 文件之后 rebuild 可生效
+$ docker-compose up -d --build php nginx mysql
+
+```
+
+
