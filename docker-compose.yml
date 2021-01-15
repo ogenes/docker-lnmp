@@ -94,6 +94,25 @@ services:
       backend:
         ipv4_address: ${REDIS_IP}
 
+  ### Mongo ################################################
+  mongo:
+    build:
+      context: ./mongo
+      args:
+        - MONGO_VERSION=${MONGO_VERSION}
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    command: --auth
+    restart: always
+    privileged: true
+    ports:
+      - ${MONGO_PORT}:27017
+    networks:
+      backend:
+        ipv4_address: ${MONGO_IP}
+
 networks:
   backend:
     driver: bridge
