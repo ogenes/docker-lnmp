@@ -1,4 +1,10 @@
-version: '3'
+version: '3.8'
+
+#/etc/hosts
+x-hosts:
+  &hosts
+  extra_hosts:
+    - default.dev.com:${NGINX_IP}
 
 services:
   ### NGINX ################################################
@@ -10,7 +16,7 @@ services:
       - ${NGINX_HOST_HTTP_PORT}:80
       - ${NGINX_HOST_HTTPS_PORT}:443
     depends_on:
-      - "php"
+      - php
     volumes:
       # nginx默认配置文件
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -59,11 +65,8 @@ services:
       - SYS_PTRACE
     ports:
       - 9000:9000
-    links:
-      - "redis"
-      - "mysql"
-    extra_hosts:
-      - "default.dev.com:${NGINX_IP}"
+    #/etc/hosts
+    <<: *hosts
     volumes:
       # php 配置文件
       - ./php/config/php.ini:/usr/local/etc/php/php.ini
