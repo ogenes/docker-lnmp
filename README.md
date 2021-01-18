@@ -63,7 +63,7 @@ $ cp nginx/conf.d/default.conf.example nginx/conf.d/default.conf
 
     nginx 虚拟主机配置文件在 docker-lnmp/nginx/conf.d 目录内， 可以参考 default 项目配置。
 
-### 六. restart | stop | start | rebuild
+### 六. restart | down | rebuild
 
 ```shell script
 
@@ -72,8 +72,14 @@ $ docker-compose restart nginx php
 Restarting nginx ... done
 Restarting php   ... done
 
-#修改 dockerfile 或者 env 文件之后 rebuild 可生效
+# 修改 dockerfile 或者 env 文件之后 rebuild 可生效
 $ docker-compose up -d --build php nginx mysql
+
+# 停止
+$ docker-compose down
+
+# 停止并删除容器、镜像
+$ docker-compose down --rmi all
 
 ```
 
