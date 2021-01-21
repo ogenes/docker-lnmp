@@ -76,9 +76,12 @@ Restarting php   ... done
 $ docker-compose up -d --build php nginx mysql
 
 # 停止
+$ docker-compose stop
+
+# 停止并删除容器
 $ docker-compose down
 
-# 停止并删除容器、镜像
+# 停止并删除容器+镜像
 $ docker-compose down --rmi all
 
 ```
