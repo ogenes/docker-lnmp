@@ -81,7 +81,7 @@ RUN pecl install -o -f redis \
 ENV COMPOSER_HOME /var/www/.composer
 RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/bin --filename=composer
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
-    && composer self-update
+    && composer self-update --1
 
 RUN chown -R www-data:www-data /var/www/
 
