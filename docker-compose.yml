@@ -41,7 +41,7 @@ services:
       - TZ=${MYSQL_TIMEZONE}
     volumes:
       # mysql默认配置文件
-      - ./mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+      - ${MYSQL_CONF_PATH}:/etc/mysql/conf.d/docker.cnf
       # 数据文件
       - ${MYSQL_DATA_PATH}:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password

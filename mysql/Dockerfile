@@ -20,6 +20,6 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 
-CMD ["mysqld"]
+CMD ["chmod -R 644 /etc/mysql/conf.d/docker.cnf"]
 
 EXPOSE 3306
