@@ -41,6 +41,7 @@ e1c96bbea465        docker-lnmp_redis   "docker-entrypoint.s…"   51 minutes ag
 ### 五. test
 ```
 $ cp nginx/conf.d/default.conf.example nginx/conf.d/default.conf
+$ docker-compose restart nginx
 
 #绑定本机hosts
 127.0.0.1 default.dev.com
