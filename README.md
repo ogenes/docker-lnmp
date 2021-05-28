@@ -4,6 +4,67 @@
 3. MySQL 支持 5.7 、8.0 版本；
 4. Redis 支持 4.0 、5.0 、6.0 版本；
 
+### 目录结构
+
+```
+├─data                      数据文件
+│  ├─mysql                      mysql文件目录
+│  │  ├─mysql
+│  │  ├─performance_schema
+│  │  ├─sys
+│  │  ├─*
+│  ├─redis*                     redis文件目录
+├─logs                      日志文件
+│  ├─nginx                      nginx日志
+│  │      access.log
+│  │      default.access.log
+│  │      default.error.log
+│  │
+│  └─php                        php日志
+│          fpm.access.log
+│          fpm.error_log
+│          php-fpm.log
+│          www.slow.log
+│─mongo
+│      Dockerfile
+│      mongod.conf              mongo配置
+│
+├─mysql
+│      docker.cnf               mysql配置
+│      Dockerfile
+│
+├─nginx
+│  │  Dockerfile
+│  │  nginx.conf                nginx配置
+│  │
+│  └─conf.d                     nginx虚拟主机配置
+│          default.conf
+│          default.conf.example
+│
+├─php
+│  │  Dockerfile
+│  │
+│  └─config                     php配置
+│      │  php-fpm.conf
+│      │  php.ini
+│      │
+│      └─php-fpm.d
+│              docker.conf
+│              www.conf
+│              zz-docker.conf
+│
+├─redis
+│      Dockerfile
+│      redis4.conf              redis配置
+│      redis5.conf
+│      redis6.conf
+│
+└─www                           默认项目
+    ├─.composer
+    └─default
+            index.php
+```
+
 ### 一. [install docker](https://github.com/ogenes/docker-lnmp/wiki/Docker-%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%AE%89%E8%A3%85)
 
 ```
