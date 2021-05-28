@@ -1,8 +1,7 @@
 version: '3.8'
 
 #/etc/hosts
-x-hosts:
-  &hosts
+x-hosts: &hosts
   extra_hosts:
     - default.dev.com:${NGINX_IP}
 
