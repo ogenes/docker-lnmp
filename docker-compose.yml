@@ -1,8 +1,7 @@
 version: '3.8'
 
 #/etc/hosts
-x-hosts:
-  &hosts
+x-hosts: &hosts
   extra_hosts:
     - default.dev.com:${NGINX_IP}
 
@@ -15,6 +14,7 @@ services:
     ports:
       - ${NGINX_HOST_HTTP_PORT}:80
       - ${NGINX_HOST_HTTPS_PORT}:443
+    restart: always
     depends_on:
       - php
     volumes:
@@ -61,6 +61,7 @@ services:
         - VERSION=${PHP_VERSION}
     container_name: php
     privileged: true
+    restart: always
     cap_add:
       - SYS_PTRACE
     ports:
@@ -88,6 +89,7 @@ services:
         - VERSION=${REDIS_VERSION}
     container_name: redis
     command: redis-server /etc/redis/redis.conf
+    restart: always
     ports:
       - ${REDIS_PORT}:6379
     volumes:
