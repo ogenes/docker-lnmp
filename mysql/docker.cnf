@@ -3,3 +3,4 @@ skip-host-cache
 skip-name-resolve
 
 sql_mode=""
+wait_timeout=1814400

@@ -74,16 +74,26 @@ fi
 
 # 安装 Redis 扩展
 RUN pecl install -o -f redis \
-  && rm -rf /tmp/pear \
   && docker-php-ext-enable redis
+
+# 安装 grpc 扩展
+RUN pecl install grpc \
+  && docker-php-ext-enable grpc
+
+# 安装 protobuf 扩展
+RUN pecl install protobuf \
+  && docker-php-ext-enable protobuf
+
+RUN rm -rf /tmp/pear
 
 # 安装 Composer
 ENV COMPOSER_HOME /var/www/.composer
 RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/bin --filename=composer
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+
 RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/bin --filename=composer1
 RUN composer1 config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
-    && composer self-update --1
+    && composer1 self-update --1
 
 RUN chown -R www-data:www-data /var/www/
 
