@@ -74,13 +74,17 @@ fi
 
 # 安装 Redis 扩展
 RUN pecl install -o -f redis \
-  && rm -rf /tmp/pear \
   && docker-php-ext-enable redis
 
 # 安装 grpc 扩展
 RUN pecl install grpc \
-  && rm -rf /tmp/pear \
   && docker-php-ext-enable grpc
+
+# 安装 protobuf 扩展
+RUN pecl install protobuf \
+  && docker-php-ext-enable protobuf
+
+RUN rm -rf /tmp/pear
 
 # 安装 Composer
 ENV COMPOSER_HOME /var/www/.composer
