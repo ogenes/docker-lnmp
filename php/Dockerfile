@@ -73,25 +73,30 @@ elif [ "$VERSION" = "7.4" ] || [ "$VERSION" = "8.0" ]; then \
 fi
 
 # 安装 Redis 扩展
-RUN pecl install -o -f redis \
-  && docker-php-ext-enable redis
+RUN pecl install -o -f redis && docker-php-ext-enable redis
 
 # 安装 grpc 扩展
-RUN pecl install grpc \
-  && docker-php-ext-enable grpc
+RUN pecl install -o -f grpc && docker-php-ext-enable grpc
 
 # 安装 protobuf 扩展
-RUN pecl install protobuf \
-  && docker-php-ext-enable protobuf
+RUN pecl install -o -f protobuf  && docker-php-ext-enable protobuf
+
+# 安装 memcached 扩展
+RUN pecl install -o -f memcached  && docker-php-ext-enable memcached
+
+# 安装 swoole 扩展
+RUN pecl install -o -f swoole && docker-php-ext-enable swoole
 
 RUN rm -rf /tmp/pear
 
 # 安装 Composer
 ENV COMPOSER_HOME /var/www/.composer
-RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/bin --filename=composer
+#RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 
-RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/bin --filename=composer1
+#RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/local/bin --filename=composer1
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer1
 RUN composer1 config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
     && composer1 self-update --1
 
