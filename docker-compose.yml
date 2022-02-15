@@ -6,7 +6,7 @@ x-hosts: &hosts
     - default.dev.com:${NGINX_IP}
 
 services:
-  ### NGINX ################################################
+  ### NGINX ##############################################################################
   nginx:
     build: ./nginx
     container_name: nginx
@@ -29,7 +29,7 @@ services:
       backend:
         ipv4_address: ${NGINX_IP}
 
-  ### MySQL ################################################
+  ### MySQL ##############################################################################
   mysql:
     build:
       context: ./mysql
@@ -53,7 +53,7 @@ services:
       backend:
         ipv4_address: ${MYSQL_IP}
 
-  ### PHP ################################################
+  ### PHP ################################################################################
   php:
     build:
       context: ./php
@@ -81,7 +81,7 @@ services:
       backend:
         ipv4_address: ${PHP_IP}
 
-  ### Redis ################################################
+  ### Redis ##############################################################################
   redis:
     build:
       context: ./redis
@@ -99,7 +99,7 @@ services:
       backend:
         ipv4_address: ${REDIS_IP}
 
-  ### Mongo ################################################
+  ### Mongo ##############################################################################
   mongo:
     build:
       context: ./mongo
@@ -117,6 +117,49 @@ services:
     networks:
       backend:
         ipv4_address: ${MONGO_IP}
+
+  ### ElasticSearch ######################################################################
+  elasticsearch:
+    build:
+      context: ./elasticsearch
+    container_name: elasticsearch
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ${ELASTICSEARCH_DATA_PATH}:/usr/share/elasticsearch/data
+      - ${ELASTICSEARCH_PLUGINS_PATH}:/usr/share/elasticsearch/plugins
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      backend:
+        ipv4_address: ${ELASTICSEARCH_IP}
+
+### kibana ############################################################################
+  kibana7:
+    build:
+      context: ./kibana7
+    container_name: kibana7
+    environment:
+      - SERVER_NAME=kibana7
+      - XPACK_MONITORING_ENABLED=true
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    ports:
+      - ${KIBANA_PORT}:5601
+    networks:
+      backend:
+        ipv4_address: ${KIBANA_IP}
 
 networks:
   backend:
