@@ -1,69 +1,11 @@
-1. docker-lnmp 项目帮助开发者快速构建本地开发环境，包括Nginx、PHP、MySQL、Redis、MongoDB服务镜像，支持服务版本切换，并支持配置文件和日志文件映射，不限操作系统；
+1. docker-lnmp 项目帮助开发者快速构建本地开发环境，包括Nginx、PHP、MySQL、Redis、MongoDB、ElasticSearch、Kibana服务镜像，支持服务版本切换，并支持配置文件和日志文件映射，不限操作系统；
 2. 此项目适合个人开发者本机部署，可以快速切换服务版本满足学习服务新版本的需求； 也适合团队中统一开发环境，设定好配置后一键部署， 便于提高团队开发效率；
 2. PHP 支持 php7.2、php7.3、php7.4、php8.0 版本；
 3. MySQL 支持 5.7 、8.0 版本；
 4. Redis 支持 4.0 、5.0 、6.0 版本；
-
-### 目录结构
-
-```
-├─data                      数据文件
-│  ├─mysql                      mysql文件目录
-│  │  ├─mysql
-│  │  ├─performance_schema
-│  │  ├─sys
-│  │  ├─*
-│  ├─redis*                     redis文件目录
-├─logs                      日志文件
-│  ├─nginx                      nginx日志
-│  │      access.log
-│  │      default.access.log
-│  │      default.error.log
-│  │
-│  └─php                        php日志
-│          fpm.access.log
-│          fpm.error_log
-│          php-fpm.log
-│          www.slow.log
-│─mongo
-│      Dockerfile
-│      mongod.conf              mongo配置
-│
-├─mysql
-│      docker.cnf               mysql配置
-│      Dockerfile
-│
-├─nginx
-│  │  Dockerfile
-│  │  nginx.conf                nginx配置
-│  │
-│  └─conf.d                     nginx虚拟主机配置
-│          default.conf
-│          default.conf.example
-│
-├─php
-│  │  Dockerfile
-│  │
-│  └─config                     php配置
-│      │  php-fpm.conf
-│      │  php.ini
-│      │
-│      └─php-fpm.d
-│              docker.conf
-│              www.conf
-│              zz-docker.conf
-│
-├─redis
-│      Dockerfile
-│      redis4.conf              redis配置
-│      redis5.conf
-│      redis6.conf
-│
-└─www                           默认项目
-    ├─.composer
-    └─default
-            index.php
-```
+5. MongoDB 支持 4.4 版本；
+6. ElasticSearch 和 Kibana 是 7.17.0 版本；
+7. PHP 扩展包括了gd、grpc、redis、protobuf、memcached、swoole等；
 
 ### 一. [install docker](https://github.com/ogenes/docker-lnmp/wiki/Docker-%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%AE%89%E8%A3%85)
 
@@ -90,7 +32,8 @@ $ cp .env.example .env
 
 ### 四. run
 ```shell script
-$ docker-compose up -d nginx
+#首次执行耗时较久，耐心等待
+$ docker-compose up -d nginx php mysql redis
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                      NAMES
 ba864491ac22        docker-lnmp_mysql   "docker-entrypoint.s…"   22 minutes ago      Up 6 seconds        0.0.0.0:3306->3306/tcp, 33060/tcp          mysql
@@ -112,7 +55,7 @@ $ docker-compose restart nginx
 
 ![QQ截图20210114105752.png](https://i.loli.net/2021/01/14/NPTJhEgcszFZaOp.png)
 
-### 五. note
+### 六. note
     默认版本为：
     PHP 7.4
     MySQL 5.7
@@ -125,7 +68,7 @@ $ docker-compose restart nginx
 
     nginx 虚拟主机配置文件在 docker-lnmp/nginx/conf.d 目录内， 可以参考 default 项目配置。
 
-### 六. restart | down | rebuild
+### 七. restart | down | rebuild
 
 ```shell script
 
@@ -148,4 +91,51 @@ $ docker-compose down --rmi all
 
 ```
 
+### 目录结构
+
+```
+.
+├── LICENSE
+├── README.md
+├── data
+│   ├── elasticsearch
+│   ├── mysql
+│   ├── redis
+├── docker-compose.yml
+├── elasticsearch
+│   └── Dockerfile
+├── kibana7
+│   └── Dockerfile
+├── logs
+├── mongo
+│   ├── Dockerfile
+│   └── mongod.conf
+├── mysql
+│   ├── Dockerfile
+│   └── docker.cnf
+├── nginx
+│   ├── Dockerfile
+│   ├── conf.d
+│   │   ├── default.conf.example
+│   └── nginx.conf
+├── php
+│   ├── Dockerfile
+│   └── config
+│       ├── php-fpm.conf
+│       ├── php-fpm.d
+│       │   ├── docker.conf
+│       │   ├── www.conf
+│       │   └── zz-docker.conf
+│       └── php.ini
+├── redis
+│   ├── Dockerfile
+│   ├── redis4.conf
+│   ├── redis5.conf
+│   └── redis6.conf
+├── text.log
+└── www
+    └── default
+        └── index.php
+
+```
 
