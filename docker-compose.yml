@@ -81,6 +81,33 @@ services:
       backend:
         ipv4_address: ${PHP_IP}
 
+  ### PHP56 ################################################
+  php56:
+    build:
+      context: ./php56
+      args:
+        - VERSION=5.6.40
+    container_name: php56
+    privileged: true
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - 9002:9002
+    #/etc/hosts
+    <<: *hosts
+    volumes:
+      # php 配置文件
+      - ./php56/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php56/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php56/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      # 项目代码
+      - ${WEB_ROOT_PATH}:/var/www/
+      # php-fpm日志
+      - ./logs/php56/:/var/log/php71/
+    networks:
+      backend:
+        ipv4_address: ${PHP56_IP}
   ### Redis ##############################################################################
   redis:
     build:
