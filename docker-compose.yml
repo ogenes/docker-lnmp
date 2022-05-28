@@ -66,6 +66,7 @@ services:
       - SYS_PTRACE
     ports:
       - 9000:9000
+      - 8888:8888
     #/etc/hosts
     <<: *hosts
     volumes:
