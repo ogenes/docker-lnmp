@@ -52,7 +52,34 @@ services:
     networks:
       backend:
         ipv4_address: ${MYSQL_IP}
-
+  ### PHP ################################################################################
+  php80:
+    build:
+      context: ./php80
+      args:
+        - VERSION=${PHP_VERSION}
+    container_name: php80
+    privileged: true
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - 9080:9080
+    #/etc/hosts
+    <<: *hosts
+    volumes:
+      # php 配置文件
+      - ./php80/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php80/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php80/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      # 项目代码
+      - ${WEB_ROOT_PATH}:/var/www/
+      # php-fpm日志
+      - ./logs/php80/:/var/log/php/
+    networks:
+      backend:
+        ipv4_address: ${PHP8_IP}
+        
   ### PHP ################################################################################
   php:
     build:
@@ -105,7 +132,7 @@ services:
       # 项目代码
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
-      - ./logs/php56/:/var/log/php71/
+      - ./logs/php56/:/var/log/php/
     networks:
       backend:
         ipv4_address: ${PHP56_IP}
