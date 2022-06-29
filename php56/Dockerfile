@@ -53,6 +53,7 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
         bcmath \
         intl \
         mbstring \
+        mysql \
         mysqli \
         pcntl \
         pdo_mysql \

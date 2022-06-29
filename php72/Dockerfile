@@ -1,5 +1,5 @@
 ARG VERSION
-FROM php:8.0-fpm
+FROM php:${VERSION}-fpm
 
 LABEL maintainer="ogenes.yi@gmail.com"
 

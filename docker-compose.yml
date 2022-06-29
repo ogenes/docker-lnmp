@@ -52,12 +52,13 @@ services:
     networks:
       backend:
         ipv4_address: ${MYSQL_IP}
-  ### PHP ################################################################################
+        
+  ### PHP80 ##############################################################################
   php80:
     build:
       context: ./php80
       args:
-        - VERSION=${PHP_VERSION}
+        - VERSION=8.0
     container_name: php80
     privileged: true
     restart: always
@@ -78,9 +79,40 @@ services:
       - ./logs/php80/:/var/log/php/
     networks:
       backend:
-        ipv4_address: ${PHP8_IP}
+        ipv4_address: ${PHP80_IP}
+      
+      
+      
+  ### PHP72 ##############################################################################
+  php72:
+    build:
+      context: ./php72
+      args:
+        - VERSION=7.2
+    container_name: php72
+    privileged: true
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - 9072:9072
+    #/etc/hosts
+    <<: *hosts
+    volumes:
+      # php 配置文件
+      - ./php72/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php72/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php72/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      # 项目代码
+      - ${WEB_ROOT_PATH}:/var/www/
+      # php-fpm日志
+      - ./logs/php80/:/var/log/php/
+    networks:
+      backend:
+        ipv4_address: ${PHP72_IP}
         
-  ### PHP ################################################################################
+        
+  ### PHP7.4 #############################################################################
   php:
     build:
       context: ./php
@@ -109,7 +141,7 @@ services:
       backend:
         ipv4_address: ${PHP_IP}
 
-  ### PHP56 ################################################
+  ### PHP5.6 #############################################################################
   php56:
     build:
       context: ./php56
@@ -121,7 +153,7 @@ services:
     cap_add:
       - SYS_PTRACE
     ports:
-      - 9002:9002
+      - 9056:9056
     #/etc/hosts
     <<: *hosts
     volumes:
@@ -136,6 +168,8 @@ services:
     networks:
       backend:
         ipv4_address: ${PHP56_IP}
+        
+        
   ### Redis ##############################################################################
   redis:
     build:
@@ -201,7 +235,7 @@ services:
       backend:
         ipv4_address: ${ELASTICSEARCH_IP}
 
-### kibana ############################################################################
+### kibana ###############################################################################
   kibana7:
     build:
       context: ./kibana7
