@@ -236,12 +236,12 @@ services:
         ipv4_address: ${ELASTICSEARCH_IP}
 
 ### kibana ###############################################################################
-  kibana7:
+  kibana:
     build:
-      context: ./kibana7
-    container_name: kibana7
+      context: ./kibana
+    container_name: kibana
     environment:
-      - SERVER_NAME=kibana7
+      - SERVER_NAME=kibana
       - XPACK_MONITORING_ENABLED=true
       - ELASTICSEARCH_URL=http://elasticsearch:9200
     ports:
