@@ -85,7 +85,7 @@ RUN pecl install -o -f redis && docker-php-ext-enable redis
 RUN pecl install -o -f memcached  && docker-php-ext-enable memcached
 
 # 安装 swoole 扩展
-RUN pecl install -o -f swoole && docker-php-ext-enable swoole
+#RUN pecl install -o -f swoole && docker-php-ext-enable swoole
 
 RUN rm -rf /tmp/pear
 
