@@ -76,10 +76,10 @@ fi
 RUN pecl install -o -f redis && docker-php-ext-enable redis
 
 # 安装 grpc 扩展
-#RUN pecl install -o -f grpc && docker-php-ext-enable grpc
+RUN pecl install -o -f https://pecl.php.net/get/grpc-1.47.0.tgz && docker-php-ext-enable grpc
 
 # 安装 protobuf 扩展
-#RUN pecl install -o -f protobuf  && docker-php-ext-enable protobuf
+RUN pecl install -o -f protobuf  && docker-php-ext-enable protobuf
 
 # 安装 memcached 扩展
 RUN pecl install -o -f memcached  && docker-php-ext-enable memcached
