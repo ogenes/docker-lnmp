@@ -98,6 +98,7 @@ services:
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
       - ./logs/php56/:/var/log/php/
+      - ./logs/app/:/data/log/
     networks:
       backend:
         ipv4_address: ${PHP56_IP}
@@ -130,6 +131,7 @@ services:
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
       - ./logs/php71/:/var/log/php/
+      - ./logs/app/:/data/log/
     networks:
       backend:
         ipv4_address: ${PHP71_IP}
@@ -163,6 +165,7 @@ services:
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
       - ./logs/php72/:/var/log/php/
+      - ./logs/app/:/data/log/
     networks:
       backend:
         ipv4_address: ${PHP72_IP}
@@ -197,6 +200,8 @@ services:
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
       - ./logs/php74/:/var/log/php/
+      # 应用日志
+      - ./logs/app/:/data/log/
     networks:
       backend:
         ipv4_address: ${PHP74_IP}
@@ -230,6 +235,8 @@ services:
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
       - ./logs/php80/:/var/log/php/
+      # 应用日志
+      - ./logs/app/:/data/log/
     networks:
       backend:
         ipv4_address: ${PHP80_IP}
@@ -263,6 +270,8 @@ services:
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
       - ./logs/php81/:/var/log/php/
+      # 应用日志
+      - ./logs/app/:/data/log/
     networks:
       backend:
         ipv4_address: ${PHP81_IP}   

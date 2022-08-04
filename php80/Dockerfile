@@ -100,7 +100,8 @@ RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/compos
 
 RUN chown -R www-data:www-data /var/www/
 
-RUN mkdir -p /var/log/php
+RUN mkdir -p /var/log/php && chown -R www-data:www-data /var/log/php
+RUN mkdir -p /data/log && chown -R www-data:www-data /data/log
 
 RUN mkdir -p $COMPOSER_HOME/cache
 

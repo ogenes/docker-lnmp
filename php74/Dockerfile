@@ -97,18 +97,17 @@ RUN rm -rf /tmp/pear
 
 # 安装 Composer
 ENV COMPOSER_HOME /var/www/.composer
-#RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/bin --filename=composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 
-#RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/local/bin --filename=composer1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer1
 RUN composer1 config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
     && composer1 self-update --1
 
 RUN chown -R www-data:www-data /var/www/
 
-RUN mkdir -p /var/log/php
+RUN mkdir -p /var/log/php && chown -R www-data:www-data /var/log/php
+RUN mkdir -p /data/log && chown -R www-data:www-data /data/log
 
 RUN mkdir -p $COMPOSER_HOME/cache
 
