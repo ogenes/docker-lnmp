@@ -1,13 +1,10 @@
-ARG VERSION
-FROM php:${VERSION}-fpm
+FROM php:5.6.40-fpm
 
 LABEL maintainer="ogenes.yi@gmail.com"
 
-# 复制时区配置
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# 安装基础
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     apt-utils \
@@ -42,7 +39,6 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 
-# 安装PHP扩展
 RUN docker-php-ext-configure bcmath --enable-bcmath \
     && docker-php-ext-configure pcntl --enable-pcntl \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql \
@@ -64,39 +60,43 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
   && docker-php-ext-install opcache \
   && docker-php-ext-enable opcache
 
-ARG VERSION
-RUN if [ "$VERSION" = "7.1" ] || [ "$VERSION" = "7.2" ] || [ "$VERSION" = "7.3" ]; then \
+ARG EXT_GD
+RUN if $EXT_GD; then \
     docker-php-ext-configure gd --with-jpeg-dir=/usr/lib --with-freetype-dir=/usr/include/freetype2 \
-    && docker-php-ext-install gd; \
-elif [ "$VERSION" = "7.4" ] || [ "$VERSION" = "8.0" ]; then \
-    docker-php-ext-configure gd --with-jpeg=/usr/lib --with-freetype=/usr/include/freetype2 \
-    && docker-php-ext-install gd; \
+        && docker-php-ext-install gd;\
 fi
 
-# 安装 Redis 扩展
-RUN pecl install -o -f https://pecl.php.net/get/redis-4.0.0.tgz && docker-php-ext-enable redis
-#
-## 安装 grpc 扩展
-#RUN pecl install -o -f grpc && docker-php-ext-enable grpc
-#
-## 安装 protobuf 扩展
-#RUN pecl install -o -f protobuf  && docker-php-ext-enable protobuf
-#
-## 安装 memcached 扩展
-#RUN pecl install -o -f memcached  && docker-php-ext-enable memcached
-#
-## 安装 swoole 扩展
-#RUN pecl install -o -f swoole && docker-php-ext-enable swoole
+ARG EXT_REDIS
+RUN if $EXT_REDIS; then \
+    pecl install -o -f https://pecl.php.net/get/redis-4.0.0.tgz && docker-php-ext-enable redis; \
+fi
+
+ARG EXT_GRPC
+RUN if $EXT_GRPC; then \
+    pecl install -o -f https://pecl.php.net/get/grpc-1.33.1.tgz && docker-php-ext-enable grpc; \
+fi
+
+ARG EXT_PROTOBUF
+RUN if $EXT_PROTOBUF; then \
+    pecl install -o -f https://pecl.php.net/get/protobuf-3.12.0.tgz  && docker-php-ext-enable protobuf; \
+fi
+
+ARG EXT_MEMCACHED
+RUN if $EXT_MEMCACHED; then \
+    pecl install -o -f https://pecl.php.net/get/memcached-2.1.0.tgz  && docker-php-ext-enable memcached; \
+fi
+
+ARG EXT_SWOOLED
+RUN if $EXT_SWOOLED; then \
+    pecl install -o -f swoole && docker-php-ext-enable swoole; \
+fi
 
 RUN rm -rf /tmp/pear
 
-# 安装 Composer
 ENV COMPOSER_HOME /var/www/.composer
-#RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/bin --filename=composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 
-#RUN curl -sS https://install.phpcomposer.com/installer | php -- --install-dir=/usr/local/bin --filename=composer1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer1
 RUN composer1 config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
     && composer1 self-update --1

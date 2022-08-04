@@ -1,5 +1,4 @@
-ARG VERSION
-FROM php:${VERSION}-fpm
+FROM php:7.4-fpm
 
 LABEL maintainer="ogenes.yi@gmail.com"
 
@@ -63,29 +62,36 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
   && docker-php-ext-install opcache \
   && docker-php-ext-enable opcache
 
-ARG VERSION
-RUN if [ "$VERSION" = "7.1" ] || [ "$VERSION" = "7.2" ] || [ "$VERSION" = "7.3" ]; then \
-    docker-php-ext-configure gd --with-jpeg-dir=/usr/lib --with-freetype-dir=/usr/include/freetype2 \
-    && docker-php-ext-install gd; \
-elif [ "$VERSION" = "7.4" ] || [ "$VERSION" = "8.0" ]; then \
+ARG EXT_GD
+RUN if $EXT_GD; then \
     docker-php-ext-configure gd --with-jpeg=/usr/lib --with-freetype=/usr/include/freetype2 \
-    && docker-php-ext-install gd; \
+            && docker-php-ext-install gd; \
 fi
 
-# 安装 Redis 扩展
-RUN pecl install -o -f redis && docker-php-ext-enable redis
+ARG EXT_REDIS
+RUN if $EXT_REDIS; then \
+    pecl install -o -f redis && docker-php-ext-enable redis; \
+fi
 
-# 安装 grpc 扩展
-RUN pecl install -o -f https://pecl.php.net/get/grpc-1.47.0.tgz && docker-php-ext-enable grpc
+ARG EXT_GRPC
+RUN if $EXT_GRPC; then \
+    pecl install -o -f grpc && docker-php-ext-enable grpc; \
+fi
 
-# 安装 protobuf 扩展
-RUN pecl install -o -f protobuf  && docker-php-ext-enable protobuf
+ARG EXT_PROTOBUF
+RUN if $EXT_PROTOBUF; then \
+    pecl install -o -f protobuf  && docker-php-ext-enable protobuf; \
+fi
 
-# 安装 memcached 扩展
-RUN pecl install -o -f memcached  && docker-php-ext-enable memcached
+ARG EXT_MEMCACHED
+RUN if $EXT_MEMCACHED; then \
+    pecl install -o -f memcached  && docker-php-ext-enable memcached; \
+fi
 
-# 安装 swoole 扩展
-RUN pecl install -o -f swoole && docker-php-ext-enable swoole
+ARG EXT_SWOOLED
+RUN if $EXT_SWOOLED; then \
+    pecl install -o -f swoole && docker-php-ext-enable swoole; \
+fi
 
 RUN rm -rf /tmp/pear
 

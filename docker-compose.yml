@@ -74,7 +74,12 @@ services:
     build:
       context: ./php56
       args:
-        - VERSION=5.6.40
+        - EXT_GD=true
+        - EXT_REDIS=true
+        - EXT_GRPC=false
+        - EXT_PROTOBUF=false
+        - EXT_MEMCACHED=true
+        - EXT_SWOOLED=false
     container_name: php56
     privileged: true
     restart: always
@@ -101,7 +106,12 @@ services:
     build:
       context: ./php71
       args:
-        - VERSION=7.1
+        - EXT_GD=true
+        - EXT_REDIS=true
+        - EXT_GRPC=true
+        - EXT_PROTOBUF=false
+        - EXT_MEMCACHED=true
+        - EXT_SWOOLED=false
     container_name: php71
     privileged: true
     restart: always
@@ -129,7 +139,12 @@ services:
     build:
       context: ./php72
       args:
-        - VERSION=7.2
+        - EXT_GD=true
+        - EXT_REDIS=true
+        - EXT_GRPC=false
+        - EXT_PROTOBUF=false
+        - EXT_MEMCACHED=true
+        - EXT_SWOOLED=false
     container_name: php72
     privileged: true
     restart: always
@@ -157,7 +172,12 @@ services:
     build:
       context: ./php74
       args:
-        - VERSION=7.4
+        - EXT_GD=true
+        - EXT_REDIS=true
+        - EXT_GRPC=false
+        - EXT_PROTOBUF=false
+        - EXT_MEMCACHED=true
+        - EXT_SWOOLED=false
     container_name: php74
     privileged: true
     restart: always
@@ -186,7 +206,12 @@ services:
     build:
       context: ./php80
       args:
-        - VERSION=8.0
+        - EXT_GD=true
+        - EXT_REDIS=true
+        - EXT_GRPC=false
+        - EXT_PROTOBUF=false
+        - EXT_MEMCACHED=true
+        - EXT_SWOOLED=false
     container_name: php80
     privileged: true
     restart: always
@@ -213,6 +238,13 @@ services:
   php81:
     build:
       context: ./php81
+      args:
+        - EXT_GD=true
+        - EXT_REDIS=true
+        - EXT_GRPC=true
+        - EXT_PROTOBUF=true
+        - EXT_MEMCACHED=true
+        - EXT_SWOOLED=true
     container_name: php81
     privileged: true
     restart: always
