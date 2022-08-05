@@ -79,10 +79,18 @@ $ docker-lnmp git:(production) docker-compose up -d
    ```
 
 4. composer成功之后，配置 nginx
-   >部分项目的nginx本地配置模板已经放入了 nginx/conf.d/55haitao/ 目录内；
-   > 参考 55haitao.conf.bak 新建配置文件 nginx/conf.d/55haitao.conf， 写入
+   > 部分项目的nginx本地配置模板已经放入了 nginx/conf.d/55haitao/ 目录内；
    >
-   > include /etc/nginx/conf.d/55haitao/finance-api.local.55haitao.com.conf;
+   > finance-api 的配置是已有模板的，其他项目没有的话可以参考它自行配置。
+   >
+   > 需要注意的是， 如果你的项目目录跟我的不一致， 需要修改对应项目的 root 路径。
+
+   > 参考 55haitao.conf.bak 新建配置文件 nginx/conf.d/55haitao.conf， 在里面引入配置模板即可:
+
+    ```
+    include /etc/nginx/conf.d/55haitao/finance-api.local.55haitao.com.conf;
+    ```
+
 
 
 5. 配置本地hosts
@@ -90,7 +98,7 @@ $ docker-lnmp git:(production) docker-compose up -d
    >需要将上述server_name解析到本机，可通过编辑 /etc/hosts 文件生效。
 
    ```shell
-   ➜  vim /etc/hosts
+   ➜  sudo vim /etc/hosts
    #加入行
    127.0.0.1 finance-api.local.55haitao.com
    ```
@@ -106,9 +114,9 @@ $ docker-lnmp git:(production) docker-compose up -d
 
 7. 访问 finance-api.local.55haitao.com 验证
 
-   ![image-20220709165831987](https://ogenes.oss-cn-beijing.aliyuncs.com/img/2022/202207091658051.png)
+   ![image-20220805135545127](https://img.ogenes.cn/img/2022/image-20220805135545127.png)
 
-   其他项目同理，下载对应代码，增加nginx配置， 然后重启nginx即可。
+   其他项目同理，下载对应代码，引入配置模板， 然后重启nginx即可。
 
 
 
