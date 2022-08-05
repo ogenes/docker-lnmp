@@ -1,13 +1,21 @@
 
 
 1. docker-lnmp 项目帮助开发者快速构建本地开发环境，包括Nginx、PHP、MySQL、Redis服务镜像，支持服务版本切换，并支持配置文件和日志文件映射，不限操作系统；
+
 2. 此项目适合个人开发者本机部署，满足学习和工作需求； 也适合团队中统一开发环境，设定好配置后一键部署， 便于提高团队开发效率；
+
 3. PHP 同时支持 php5.6、php7.1、php7.2、php7.4、php8.0、php8.1 版本；
-4. MySQL 支持 5.7 、8.0 版本切换；
-5. Redis 支持 4.0 、5.0 、6.0 版本切换；
-6. PHP 扩展另补充了gd、grpc、redis、protobuf、memcached、swoole等，可通过env参数配置选择是否开启；
+
+4. MySQL 支持 5.7 、8.0 版本切换，可通过env参数配置选择；
+
+5. Redis 支持 4.0 、5.0 、6.0 版本切换，可通过env参数配置选择；
+
+6. PHP 扩展另补充了gd、grpc、redis、protobuf、memcached、swoole等，可通过compse.yml中args控制；
+
+   ![image-20220805135905271](/Users/55haitao/Library/Application%20Support/typora-user-images/image-20220805135905271.png)
 
 ### 一. [安装 docker](https://github.com/ogenes/docker-lnmp/wiki/Docker-%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%AE%89%E8%A3%85)
+
 ```shell
 $ docker -v
 Docker version 20.10.16, build aa7e414
@@ -79,6 +87,7 @@ $ docker-lnmp git:(production) docker-compose up -d
    ```
 
 4. composer成功之后，配置 nginx
+
    > 部分项目的nginx本地配置模板已经放入了 nginx/conf.d/55haitao/ 目录内；
    >
    > finance-api 的配置是已有模板的，其他项目没有的话可以参考它自行配置。
@@ -88,7 +97,7 @@ $ docker-lnmp git:(production) docker-compose up -d
    > 参考 55haitao.conf.bak 新建配置文件 nginx/conf.d/55haitao.conf， 在里面引入配置模板即可:
 
     ```
-    include /etc/nginx/conf.d/55haitao/finance-api.local.55haitao.com.conf;
+   include /etc/nginx/conf.d/55haitao/finance-api.local.55haitao.com.conf;
     ```
 
 
@@ -116,7 +125,7 @@ $ docker-lnmp git:(production) docker-compose up -d
 
    ![image-20220805135545127](https://img.ogenes.cn/img/2022/image-20220805135545127.png)
 
-   其他项目同理，下载对应代码，引入配置模板， 然后重启nginx即可。
+   其他项目同理，下载对应代码，增加nginx配置， 然后重启nginx即可。
 
 
 
