@@ -6,3 +6,4 @@
 .DS_Store
 
 /nginx/conf.d/*.conf
+!/nginx/conf.d/default.conf
