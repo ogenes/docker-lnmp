@@ -12,7 +12,7 @@
 
 6. PHP 扩展另补充了gd、grpc、redis、protobuf、memcached、swoole等，可通过compse.yml中args控制；
 
-   ![image-20220805135905271](/Users/55haitao/Library/Application%20Support/typora-user-images/image-20220805135905271.png)
+![image-20220805135905271](/Users/55haitao/Library/Application%20Support/typora-user-images/image-20220805135905271.png)
 
 ### 一. [安装 docker](https://github.com/ogenes/docker-lnmp/wiki/Docker-%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%AE%89%E8%A3%85)
 
