@@ -1,0 +1,13 @@
+
+include /etc/nginx/conf.d/55haitao/ad.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/affiliate.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/appv6.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/common.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/dmp.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/finance-api.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/gocashback.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/htapi.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/maxrebates.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/permission.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/store.local.55haitao.com;
+include /etc/nginx/conf.d/55haitao/sys.local.55haitao.com;
