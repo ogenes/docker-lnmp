@@ -14,7 +14,7 @@
 
 ![image-20220805140235358](https://img.ogenes.cn/img/2022/image-20220805140235358.png)
 
-### 一. [安装 docker](https://github.com/ogenes/docker-lnmp/wiki/Docker-%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%AE%89%E8%A3%85)
+### 一. [安装 docker](https://www.runoob.com/docker/macos-docker-install.html)
 
 ```shell
 $ docker -v
