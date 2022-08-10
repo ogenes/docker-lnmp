@@ -111,5 +111,7 @@ RUN mkdir -p /data/log && chown -R www-data:www-data /data/log
 
 RUN mkdir -p $COMPOSER_HOME/cache
 
+RUN ln -snf /usr/local/bin/php /usr/local/bin/php72
+
 VOLUME $COMPOSER_HOME
 WORKDIR /var/www
