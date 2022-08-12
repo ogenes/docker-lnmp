@@ -359,6 +359,28 @@ services:
     depends_on:
       - elasticsearch
 
+  filebeat:
+    build:
+      context: filebeat/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    entrypoint: "filebeat -e -strict.perms=false"
+    container_name: filebeat
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./filebeat/modules.d/nginx.yml:/usr/share/filebeat/modules.d/nginx.yml
+      - ./logs/elk:/var/elk/logs
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - logstash
+      - elasticsearch
+      - kibana
+    links:
+      - logstash
+    networks:
+      backend:
+        ipv4_address: ${FILEBEAT_IP}
+
 networks:
   backend:
     driver: bridge
