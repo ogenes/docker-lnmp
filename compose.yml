@@ -49,8 +49,8 @@ services:
     networks:
       backend:
         ipv4_address: ${MYSQL_IP}
-     
-   
+
+
   ### Redis ##############################################################################
   redis:
     build:
@@ -68,7 +68,7 @@ services:
     networks:
       backend:
         ipv4_address: ${REDIS_IP}
-        
+
   ### PHP56 #############################################################################
   php56:
     build:
@@ -135,7 +135,7 @@ services:
     networks:
       backend:
         ipv4_address: ${PHP71_IP}
-          
+
   ### PHP72 ##############################################################################
   php72:
     build:
@@ -169,7 +169,7 @@ services:
     networks:
       backend:
         ipv4_address: ${PHP72_IP}
-        
+
   ### PHP74 #############################################################################
   php74:
     build:
@@ -205,7 +205,7 @@ services:
     networks:
       backend:
         ipv4_address: ${PHP74_IP}
-        
+
   ### PHP80 ##############################################################################
   php80:
     build:
@@ -240,7 +240,7 @@ services:
     networks:
       backend:
         ipv4_address: ${PHP80_IP}
-      
+
   ### PHP81 ##############################################################################
   php81:
     build:
@@ -274,8 +274,90 @@ services:
       - ./logs/app/:/data/log/
     networks:
       backend:
-        ipv4_address: ${PHP81_IP}   
-      
+        ipv4_address: ${PHP81_IP}
+
+  ### ELK ##############################################################################
+  elasticsearch:
+    build:
+      context: ./elasticsearch
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    container_name: elasticsearch
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
+      - ./data/elasticsearch:/usr/share/elasticsearch/data:z
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      # Bootstrap password.
+      # Used to initialize the keystore during the initial startup of
+      # Elasticsearch. Ignored on subsequent runs.
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
+      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+    networks:
+      backend:
+        ipv4_address: ${ELASTICSEARCH_IP}
+  elksetup:
+    build:
+      context: ./elksetup
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    init: true
+    container_name: elksetup
+    volumes:
+      - ./data/setup:/state:Z
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    networks:
+      backend:
+        ipv4_address: ${ELKSETUP_IP}
+    depends_on:
+      - elasticsearch
+  kibana:
+    build:
+      context: kibana/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    container_name: kibana
+    volumes:
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
+    ports:
+      - "5601:5601"
+    environment:
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    networks:
+      backend:
+        ipv4_address: ${KIBANA_IP}
+    depends_on:
+      - elasticsearch
+  logstash:
+    build:
+      context: logstash/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    container_name: logstash
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+    ports:
+      - "5044:5044"
+      - "50000:50000/tcp"
+      - "50000:50000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: -Xms256m -Xmx256m
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+    networks:
+      backend:
+        ipv4_address: ${LOGSTASH_IP}
+    depends_on:
+      - elasticsearch
 
 networks:
   backend:
