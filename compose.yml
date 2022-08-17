@@ -177,10 +177,10 @@ services:
       args:
         - EXT_GD=true
         - EXT_REDIS=true
-        - EXT_GRPC=false
-        - EXT_PROTOBUF=false
+        - EXT_GRPC=true
+        - EXT_PROTOBUF=true
         - EXT_MEMCACHED=true
-        - EXT_SWOOLED=false
+        - EXT_SWOOLED=true
     container_name: php74
     privileged: true
     restart: always
@@ -259,6 +259,7 @@ services:
       - SYS_PTRACE
     ports:
       - "9081:9081"
+      - "8881:8881"
     #/etc/hosts
     <<: *hosts
     volumes:

@@ -88,7 +88,7 @@ fi
 
 ARG EXT_SWOOLED
 RUN if $EXT_SWOOLED; then \
-    pecl install -o -f swoole && docker-php-ext-enable swoole; \
+    pecl install -o -f https://pecl.php.net/get/swoole-4.8.9.tgz && docker-php-ext-enable swoole; \
 fi
 
 RUN rm -rf /tmp/pear
