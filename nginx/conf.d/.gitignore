@@ -1,0 +1,3 @@
+*
+!/nginx/conf.d/default.conf
+!/nginx/conf.d/fpm

@@ -169,6 +169,39 @@ services:
     networks:
       backend:
         ipv4_address: ${PHP72_IP}
+  ### PHP73 ##############################################################################
+  php73:
+    build:
+      context: ./php73
+      args:
+        - EXT_GD=true
+        - EXT_REDIS=true
+        - EXT_GRPC=false
+        - EXT_PROTOBUF=false
+        - EXT_MEMCACHED=true
+        - EXT_SWOOLED=false
+    container_name: php73
+    privileged: true
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "9073:9073"
+    #/etc/hosts
+    <<: *hosts
+    volumes:
+      # php 配置文件
+      - ./php72/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php72/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php72/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      # 项目代码
+      - ${WEB_ROOT_PATH}:/var/www/
+      # php-fpm日志
+      - ./logs/php73/:/var/log/php/
+      - ./logs/app/:/data/log/
+    networks:
+      backend:
+        ipv4_address: ${PHP73_IP}
 
   ### PHP74 #############################################################################
   php74:
