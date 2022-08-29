@@ -57,6 +57,7 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
         zip \
         soap \
         exif \
+        mcrypt \
   && docker-php-ext-install opcache \
   && docker-php-ext-enable opcache
 
