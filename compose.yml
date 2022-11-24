@@ -4,6 +4,24 @@ version: '3.8'
 x-hosts: &hosts
   extra_hosts:
     - default.dev.com:${NGINX_IP}
+    - ad.local.55haitao.com:${NGINX_IP}
+    - permission.local.55haitao.com:${NGINX_IP}
+    - store.local.55haitao.com:${NGINX_IP}
+    - common.local.55haitao.com:${NGINX_IP}
+    - maxrebates.local.55haitao.com:${NGINX_IP}
+    - htapi.local.55haitao.com:${NGINX_IP}
+    - affiliate.local.55haitao.com:${NGINX_IP}
+    - sys.local.55haitao.com:${NGINX_IP}
+    - appv6.local.55haitao.com:${NGINX_IP}
+    - dmp.local.55haitao.com:${NGINX_IP}
+    - gocashback.local.55haitao.com:${NGINX_IP}
+    - hub.local.55haitao.com:${NGINX_IP}
+    - cas.local.55haitao.com:${NGINX_IP}
+    - finance-api.local.55haitao.com:${NGINX_IP}
+    - esb-user.local.55haitao.com:${NGINX_IP}
+    - esb-base.local.55haitao.com:${NGINX_IP}
+    - esb-utils.local.55haitao.com:${NGINX_IP}
+    - esb-api.local.55haitao.com:${NGINX_IP}
 
 services:
   ### NGINX ##############################################################################
@@ -32,6 +50,8 @@ services:
       context: ./mysql
       args:
         - VERSION=${MYSQL_VERSION}
+#    M1 需要指定 platform
+    platform: linux/x86_64
     container_name: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
