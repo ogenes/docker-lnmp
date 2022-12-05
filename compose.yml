@@ -181,6 +181,8 @@ services:
       - ./php72/config/php.ini:/usr/local/etc/php/php.ini
       - ./php72/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
       - ./php72/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+      - ./id_rsa:/root/.ssh/id_rsa
       # 项目代码
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
@@ -320,6 +322,8 @@ services:
       - ./php81/config/php.ini:/usr/local/etc/php/php.ini
       - ./php81/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
       - ./php81/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+      - ./id_rsa:/root/.ssh/id_rsa
       # 项目代码
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志

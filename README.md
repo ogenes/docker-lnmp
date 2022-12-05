@@ -38,6 +38,7 @@ Note: 首次执行耗时较久，耐心等待；如果有些镜像下载失败�
 ```shell script
 $ cd docker-lnmp
 $ docker-lnmp git:(production) cp .env.example .env
+$ docker-lnmp git:(production) ssh-keygen -C 'ogenes-docker' #注意修改路径为当前目录 ./id_rsa
 $ docker-lnmp git:(production) docker-compose up -d
 #如果不需要启动所有服务，可以加上service参数选择服务分开启动： docker-compose up -d nginx php71
 ```
