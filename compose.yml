@@ -114,6 +114,8 @@ services:
       - ./php56/config/php.ini:/usr/local/etc/php/php.ini
       - ./php56/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
       - ./php56/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+      - ./id_rsa:/root/.ssh/id_rsa
       # 项目代码
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
@@ -147,6 +149,8 @@ services:
       - ./php71/config/php.ini:/usr/local/etc/php/php.ini
       - ./php71/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
       - ./php71/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+      - ./id_rsa:/root/.ssh/id_rsa
       # 项目代码
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
@@ -213,9 +217,11 @@ services:
     <<: *hosts
     volumes:
       # php 配置文件
-      - ./php72/config/php.ini:/usr/local/etc/php/php.ini
-      - ./php72/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
-      - ./php72/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./php73/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php73/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php73/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+      - ./id_rsa:/root/.ssh/id_rsa
       # 项目代码
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
@@ -251,6 +257,8 @@ services:
       - ./php74/config/php.ini:/usr/local/etc/php/php.ini
       - ./php74/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
       - ./php74/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+      - ./id_rsa:/root/.ssh/id_rsa
       # 项目代码
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
@@ -286,6 +294,8 @@ services:
       - ./php80/config/php.ini:/usr/local/etc/php/php.ini
       - ./php80/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
       - ./php80/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+      - ./id_rsa:/root/.ssh/id_rsa
       # 项目代码
       - ${WEB_ROOT_PATH}:/var/www/
       # php-fpm日志
