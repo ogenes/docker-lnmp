@@ -1,5 +1,5 @@
 ARG VERSION
-FROM mysql:${VERSION}
+FROM mysql/mysql-server:${VERSION}
 
 LABEL maintainer="ogenes.yi@gmail.com"
 

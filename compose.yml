@@ -51,10 +51,10 @@ services:
       args:
         - VERSION=${MYSQL_VERSION}
 #    M1 需要指定 platform
-    platform: linux/x86_64
     container_name: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_HOST="%"
       - TZ=${MYSQL_TIMEZONE}
     volumes:
       # mysql默认配置文件
