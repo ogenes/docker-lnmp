@@ -54,7 +54,6 @@ services:
     container_name: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_ROOT_HOST="%"
       - TZ=${MYSQL_TIMEZONE}
     volumes:
       # mysql默认配置文件

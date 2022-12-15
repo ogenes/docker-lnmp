@@ -42,6 +42,14 @@ $ docker-lnmp git:(production) ssh-keygen -C 'ogenes-docker' #注意修改路径
 $ docker-lnmp git:(production) docker-compose up -d
 #如果不需要启动所有服务，可以加上service参数选择服务分开启动： docker-compose up -d nginx php71
 ```
+```sql
+docker exec -it mysql bash
+mysql -uroot -p 123456
+use mysql;
+select host from user where user='root';
+update user set host = '%' where user ='root';
+flush privileges;
+```
 
 ### 四. 项目配置（以finance-api项目为例）
 
