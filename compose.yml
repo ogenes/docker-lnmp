@@ -344,14 +344,17 @@ services:
         ipv4_address: ${PHP81_IP}
 
   ### ElasticSearch ######################################################################
-  elasticsearch:
+  es01:
     build:
       context: ./elasticsearch
-    container_name: elasticsearch
+    container_name: es01
     environment:
-      - xpack.security.enabled=true
-      - discovery.type=single-node
+      - node.name=es01
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - cluster.name=docker-cluster
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
     ulimits:
       memlock:
         soft: -1
@@ -362,14 +365,71 @@ services:
     cap_add:
       - IPC_LOCK
     volumes:
-      - ${ELASTICSEARCH_DATA_PATH}:/usr/share/elasticsearch/data
-      - ${ELASTICSEARCH_PLUGINS_PATH}:/usr/share/elasticsearch/plugins
+      - ${ELASTICSEARCH_PATH}/01/data:/usr/share/elasticsearch/data
+      - ${ELASTICSEARCH_PATH}/01/plugins:/usr/share/elasticsearch/plugins
     ports:
       - 9200:9200
-      - 9300:9300
     networks:
       backend:
-        ipv4_address: ${ELASTICSEARCH_IP}
+        ipv4_address: ${ES01_IP}
+
+  ### kibana ############################################################################
+  es02:
+    build:
+      context: ./elasticsearch
+    container_name: es02
+    environment:
+      - node.name=es02
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ${ELASTICSEARCH_PATH}/02/data:/usr/share/elasticsearch/data
+      - ${ELASTICSEARCH_PATH}/02/plugins:/usr/share/elasticsearch/plugins
+    networks:
+      backend:
+        ipv4_address: ${ES02_IP}
+
+  ### kibana ############################################################################
+  es03:
+    build:
+      context: ./elasticsearch
+    container_name: es03
+    environment:
+      - node.name=es03
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ${ELASTICSEARCH_PATH}/03/data:/usr/share/elasticsearch/data
+      - ${ELASTICSEARCH_PATH}/03/plugins:/usr/share/elasticsearch/plugins
+    networks:
+      backend:
+        ipv4_address: ${ES03_IP}
 
   ### kibana ############################################################################
   kibana:
@@ -379,7 +439,8 @@ services:
     environment:
       - SERVER_NAME=kibana
       - XPACK_MONITORING_ENABLED=true
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=http://es01:9200
+      - I18N_LOCALE=zh-CN
       - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
       - ELASTICSEARCH_PASSWORD="${ELASTICSEARCH_PASSWORD}"
     ports:
