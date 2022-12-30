@@ -343,6 +343,49 @@ services:
       backend:
         ipv4_address: ${PHP81_IP}
 
+  ### ElasticSearch ######################################################################
+  elasticsearch:
+    build:
+      context: ./elasticsearch
+    container_name: elasticsearch
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ${ELASTICSEARCH_DATA_PATH}:/usr/share/elasticsearch/data
+      - ${ELASTICSEARCH_PLUGINS_PATH}:/usr/share/elasticsearch/plugins
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      backend:
+        ipv4_address: ${ELASTICSEARCH_IP}
+
+  ### kibana ############################################################################
+  kibana:
+    build:
+      context: ./kibana
+    container_name: kibana
+    environment:
+      - SERVER_NAME=kibana
+      - XPACK_MONITORING_ENABLED=true
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    ports:
+      - ${KIBANA_PORT}:5601
+    networks:
+      backend:
+        ipv4_address: ${KIBANA_IP}
+
 networks:
   backend:
     driver: bridge
