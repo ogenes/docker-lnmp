@@ -349,7 +349,7 @@ services:
       context: ./elasticsearch
     container_name: elasticsearch
     environment:
-      - xpack.security.enabled=false
+      - xpack.security.enabled=true
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -380,6 +380,8 @@ services:
       - SERVER_NAME=kibana
       - XPACK_MONITORING_ENABLED=true
       - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD="${ELASTICSEARCH_PASSWORD}"
     ports:
       - ${KIBANA_PORT}:5601
     networks:
