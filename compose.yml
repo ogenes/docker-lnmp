@@ -354,7 +354,7 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - cluster.name=docker-cluster
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=true
+      - xpack.security.enabled=false
     ulimits:
       memlock:
         soft: -1
@@ -367,13 +367,13 @@ services:
     volumes:
       - ${ELASTICSEARCH_PATH}/01/data:/usr/share/elasticsearch/data
       - ${ELASTICSEARCH_PATH}/01/plugins:/usr/share/elasticsearch/plugins
+      - ${ELASTICSEARCH_LOG}/01:/usr/share/elasticsearch/logs
     ports:
       - 9200:9200
     networks:
       backend:
         ipv4_address: ${ES01_IP}
 
-  ### kibana ############################################################################
   es02:
     build:
       context: ./elasticsearch
@@ -385,7 +385,7 @@ services:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=true
+      - xpack.security.enabled=false
     ulimits:
       memlock:
         soft: -1
@@ -398,11 +398,11 @@ services:
     volumes:
       - ${ELASTICSEARCH_PATH}/02/data:/usr/share/elasticsearch/data
       - ${ELASTICSEARCH_PATH}/02/plugins:/usr/share/elasticsearch/plugins
+      - ${ELASTICSEARCH_LOG}/02:/usr/share/elasticsearch/logs
     networks:
       backend:
         ipv4_address: ${ES02_IP}
 
-  ### kibana ############################################################################
   es03:
     build:
       context: ./elasticsearch
@@ -414,7 +414,7 @@ services:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=true
+      - xpack.security.enabled=false
     ulimits:
       memlock:
         soft: -1
@@ -427,6 +427,7 @@ services:
     volumes:
       - ${ELASTICSEARCH_PATH}/03/data:/usr/share/elasticsearch/data
       - ${ELASTICSEARCH_PATH}/03/plugins:/usr/share/elasticsearch/plugins
+      - ${ELASTICSEARCH_LOG}/03:/usr/share/elasticsearch/logs
     networks:
       backend:
         ipv4_address: ${ES03_IP}
