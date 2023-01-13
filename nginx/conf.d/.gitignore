@@ -1,3 +1,4 @@
 *
-!/nginx/conf.d/default.conf
-!/nginx/conf.d/fpm
+!default.conf
+!fpm
+!fpm/php*
