@@ -1,0 +1,4 @@
+*
+!default.conf
+!fpm
+!fpm/php*

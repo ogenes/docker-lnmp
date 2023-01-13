@@ -4,5 +4,4 @@
 .env
 
 .DS_Store
-
-/nginx/conf.d/*.conf
+id_rsa*

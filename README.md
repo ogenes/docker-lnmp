@@ -1,11 +1,10 @@
 1. docker-lnmp 项目帮助开发者快速构建本地开发环境，包括Nginx、PHP、MySQL、Redis、MongoDB、ElasticSearch、Kibana服务镜像，支持服务版本切换，并支持配置文件和日志文件映射，不限操作系统；
 2. 此项目适合个人开发者本机部署，可以快速切换服务版本满足学习服务新版本的需求； 也适合团队中统一开发环境，设定好配置后一键部署， 便于提高团队开发效率；
-2. PHP 支持 php7.2、php7.3、php7.4、php8.0 版本；
+2. PHP 支持多版本 包括php5.6、 php7.1、php7.2、php7.3、php7.4、php8.0、php8.1 版本；
 3. MySQL 支持 5.7 、8.0 版本；
 4. Redis 支持 4.0 、5.0 、6.0 版本；
-5. MongoDB 支持 4.4 版本；
-6. ElasticSearch 和 Kibana 是 7.17.0 版本；
-7. PHP 扩展包括了gd、grpc、redis、protobuf、memcached、swoole等；
+5. ElasticSearch 和 Kibana 是 7.17.0 版本；
+6PHP 扩展包括了gd、grpc、redis、protobuf、memcached、swoole等；
 
 ### 一. [install docker](https://github.com/ogenes/docker-lnmp/wiki/Docker-%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%AE%89%E8%A3%85)
 
@@ -33,7 +32,7 @@ $ cp .env.example .env
 ### 四. run
 ```shell script
 #首次执行耗时较久，耐心等待
-$ docker-compose up -d nginx php mysql redis
+$ docker-compose up -d nginx php74 mysql redis
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                      NAMES
 ba864491ac22        docker-lnmp_mysql   "docker-entrypoint.s…"   22 minutes ago      Up 6 seconds        0.0.0.0:3306->3306/tcp, 33060/tcp          mysql
@@ -57,12 +56,11 @@ $ docker-compose restart nginx
 
 ### 六. note
     默认版本为：
-    PHP 7.4
     MySQL 5.7
     Redis 5.0
-    可以通过修改 env 文件的 PHP_VERSION 、MYSQL_VERSION 、REDIS_VERSION 来选择其他版本
+    可以通过修改 env 文件的 MYSQL_VERSION 、REDIS_VERSION 来选择其他版本
     MySQL 和 Redis 切换版本时，注意切换配置文件
-    
+
     项目目录默认为 docker-lnmp/www 目录
     可以通过修改 env 文件的 WEB_ROOT_PATH 来指定其他目录
 
