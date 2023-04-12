@@ -22,6 +22,8 @@ x-hosts: &hosts
     - esb-base.local.55haitao.com:${NGINX_IP}
     - esb-utils.local.55haitao.com:${NGINX_IP}
     - esb-api.local.55haitao.com:${NGINX_IP}
+    - cas.dev.com:${NGINX_IP}
+    - permission.dev.com:${NGINX_IP}
 
 services:
   ### NGINX ##############################################################################
@@ -450,6 +452,20 @@ services:
       backend:
         ipv4_address: ${KIBANA_IP}
 
+  bitwarden:
+    image: bitwardenrs/server
+    container_name: bitwarden
+    restart: always
+    volumes:
+      - ./data/bitwarden:/data
+    ports:
+      - 1080:80
+    environment:
+      SIGNUPS_ALLOWED: 'true'
+      WBE_VAULT_ENABLE: 'true'
+    networks:
+      backend:
+        ipv4_address: ${BITWARDEN_IP}
 networks:
   backend:
     driver: bridge
