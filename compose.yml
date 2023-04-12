@@ -461,7 +461,7 @@ services:
     ports:
       - 1080:80
     environment:
-      SIGNUPS_ALLOWED: 'true'
+      SIGNUPS_ALLOWED: 'false'
       WBE_VAULT_ENABLE: 'true'
     networks:
       backend:
