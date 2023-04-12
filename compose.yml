@@ -453,7 +453,7 @@ services:
         ipv4_address: ${KIBANA_IP}
 
   bitwarden:
-    image: bitwardenrs/server
+    image: docker.io/vaultwarden/server:latest
     container_name: bitwarden
     restart: always
     volumes:
