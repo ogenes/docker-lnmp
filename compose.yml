@@ -39,6 +39,7 @@ services:
       # nginx默认配置文件
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
       # 项目代码
       - ${WEB_ROOT_PATH}:/var/www/
       # nginx日志
@@ -46,6 +47,14 @@ services:
     networks:
       backend:
         ipv4_address: ${NGINX_IP}
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ${WEB_ROOT_PATH}/www/:/var/www/certbot/:rw
+      - ./nginx/ssl/:/etc/letsencrypt/:rw
+    networks:
+      backend:
+        ipv4_address: ${CERTBOT_IP}
   ### MySQL ##############################################################################
   mysql:
     build:

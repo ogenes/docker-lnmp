@@ -16,7 +16,13 @@ RUN apt-get update \
     vim \
     wget \
     net-tools \
-  && rm -rf /var/lib/apt/lists/*
+    snapd \
+  && rm -rf /var/lib/apt/lists/* \
+
+#certbot
+RUN snap install core; snap refresh core
+RUN snap install --classic certbot
+RUN ln -s /snap/bin/certbot /usr/bin/certbot
 
 # 更改权限
 RUN mkdir /var/www \
