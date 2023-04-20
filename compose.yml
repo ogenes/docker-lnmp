@@ -45,14 +45,6 @@ services:
     networks:
       backend:
         ipv4_address: ${NGINX_IP}
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ${WEB_ROOT_PATH}/www/:/var/www/certbot/:rw
-      - ./nginx/ssl/:/etc/letsencrypt/:rw
-    networks:
-      backend:
-        ipv4_address: ${CERTBOT_IP}
 
   certbot:
     image: certbot/certbot
