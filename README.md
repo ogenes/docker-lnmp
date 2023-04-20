@@ -42,7 +42,7 @@ $ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                      NAMES
 ba864491ac22        docker-lnmp_mysql   "docker-entrypoint.s…"   22 minutes ago      Up 6 seconds        0.0.0.0:3306->3306/tcp, 33060/tcp          mysql
 68ca3dcdf667        docker-lnmp_nginx   "nginx -g 'daemon of…"   42 minutes ago      Up 3 seconds        0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   nginx
-9e46003ebe39        docker-lnmp_php     "docker-php-entrypoi…"   42 minutes ago      Up 4 seconds        0.0.0.0:9000->9000/tcp                     php
+9e46003ebe39        docker-lnmp_php74   "docker-php74-entrypoi…"   42 minutes ago      Up 4 seconds        0.0.0.0:9074->9074/tcp                     php
 e1c96bbea465        docker-lnmp_redis   "docker-entrypoint.s…"   51 minutes ago      Up 5 seconds        0.0.0.0:6379->6379/tcp                     redis
 ```
 
@@ -66,7 +66,7 @@ $ docker-compose restart nginx
     可以通过修改 env 文件的 MYSQL_VERSION 、REDIS_VERSION 来选择其他版本
     MySQL 和 Redis 切换版本时，注意切换配置文件
 
-    项目目录默认为 docker-lnmp/www 目录
+    项目目录默认为 docker-lnmp/../www 目录
     可以通过修改 env 文件的 WEB_ROOT_PATH 来指定其他目录
 
     nginx 虚拟主机配置文件在 docker-lnmp/nginx/conf.d 目录内， 可以参考 default 项目配置。
