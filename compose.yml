@@ -22,6 +22,8 @@ x-hosts: &hosts
     - esb-base.local.55haitao.com:${NGINX_IP}
     - esb-utils.local.55haitao.com:${NGINX_IP}
     - esb-api.local.55haitao.com:${NGINX_IP}
+    - cas.dev.com:${NGINX_IP}
+    - permission.dev.com:${NGINX_IP}
 
 services:
   ### NGINX ##############################################################################
@@ -37,14 +39,31 @@ services:
       # nginx默认配置文件
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf.d:/etc/nginx/conf.d
-      # 项目代码
+      - ./nginx/ssl:/etc/nginx/ssl
       - ${WEB_ROOT_PATH}:/var/www/
-      # nginx日志
       - ${NGINX_LOG_PATH}:/var/log/nginx/
     networks:
       backend:
         ipv4_address: ${NGINX_IP}
-  ### MySQL ##############################################################################
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ${WEB_ROOT_PATH}/www/:/var/www/certbot/:rw
+      - ./nginx/ssl/:/etc/letsencrypt/:rw
+    networks:
+      backend:
+        ipv4_address: ${CERTBOT_IP}
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ${WEB_ROOT_PATH}/certbot/:/var/www/certbot/:rw
+      - ./nginx/ssl/:/etc/letsencrypt/:rw
+    networks:
+      backend:
+        ipv4_address: ${CERTBOT_IP}
+
   mysql:
     build:
       context: ./mysql
@@ -69,8 +88,6 @@ services:
       backend:
         ipv4_address: ${MYSQL_IP}
 
-
-  ### Redis ##############################################################################
   redis:
     build:
       context: ./redis
@@ -88,7 +105,6 @@ services:
       backend:
         ipv4_address: ${REDIS_IP}
 
-  ### PHP56 #############################################################################
   php56:
     build:
       context: ./php56
@@ -123,7 +139,7 @@ services:
     networks:
       backend:
         ipv4_address: ${PHP56_IP}
-  ### PHP71 ##############################################################################
+
   php71:
     build:
       context: ./php71
@@ -159,7 +175,6 @@ services:
       backend:
         ipv4_address: ${PHP71_IP}
 
-  ### PHP72 ##############################################################################
   php72:
     build:
       context: ./php72
@@ -194,7 +209,7 @@ services:
     networks:
       backend:
         ipv4_address: ${PHP72_IP}
-  ### PHP73 ##############################################################################
+
   php73:
     build:
       context: ./php73
@@ -230,7 +245,6 @@ services:
       backend:
         ipv4_address: ${PHP73_IP}
 
-  ### PHP74 #############################################################################
   php74:
     build:
       context: ./php74
@@ -268,7 +282,6 @@ services:
       backend:
         ipv4_address: ${PHP74_IP}
 
-  ### PHP80 ##############################################################################
   php80:
     build:
       context: ./php80
@@ -305,7 +318,6 @@ services:
       backend:
         ipv4_address: ${PHP80_IP}
 
-  ### PHP81 ##############################################################################
   php81:
     build:
       context: ./php81
@@ -343,116 +355,6 @@ services:
       backend:
         ipv4_address: ${PHP81_IP}
 
-  ### ElasticSearch ######################################################################
-  es01:
-    build:
-      context: ./elasticsearch
-    container_name: es01
-    environment:
-      - node.name=es01
-      - discovery.seed_hosts=es02,es03
-      - cluster.initial_master_nodes=es01,es02,es03
-      - cluster.name=docker-cluster
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=false
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    cap_add:
-      - IPC_LOCK
-    volumes:
-      - ${ELASTICSEARCH_PATH}/01/data:/usr/share/elasticsearch/data
-      - ${ELASTICSEARCH_PATH}/01/plugins:/usr/share/elasticsearch/plugins
-      - ${ELASTICSEARCH_LOG}/01:/usr/share/elasticsearch/logs
-    ports:
-      - 9200:9200
-    networks:
-      backend:
-        ipv4_address: ${ES01_IP}
-
-  es02:
-    build:
-      context: ./elasticsearch
-    container_name: es02
-    environment:
-      - node.name=es02
-      - discovery.seed_hosts=es01,es03
-      - cluster.initial_master_nodes=es01,es02,es03
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=false
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    cap_add:
-      - IPC_LOCK
-    volumes:
-      - ${ELASTICSEARCH_PATH}/02/data:/usr/share/elasticsearch/data
-      - ${ELASTICSEARCH_PATH}/02/plugins:/usr/share/elasticsearch/plugins
-      - ${ELASTICSEARCH_LOG}/02:/usr/share/elasticsearch/logs
-    networks:
-      backend:
-        ipv4_address: ${ES02_IP}
-
-  es03:
-    build:
-      context: ./elasticsearch
-    container_name: es03
-    environment:
-      - node.name=es03
-      - discovery.seed_hosts=es01,es02
-      - cluster.initial_master_nodes=es01,es02,es03
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=false
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    cap_add:
-      - IPC_LOCK
-    volumes:
-      - ${ELASTICSEARCH_PATH}/03/data:/usr/share/elasticsearch/data
-      - ${ELASTICSEARCH_PATH}/03/plugins:/usr/share/elasticsearch/plugins
-      - ${ELASTICSEARCH_LOG}/03:/usr/share/elasticsearch/logs
-    networks:
-      backend:
-        ipv4_address: ${ES03_IP}
-
-  ### kibana ############################################################################
-  kibana:
-    build:
-      context: ./kibana
-    container_name: kibana
-    environment:
-      - SERVER_NAME=kibana
-      - XPACK_MONITORING_ENABLED=true
-      - ELASTICSEARCH_HOSTS=http://es01:9200
-      - I18N_LOCALE=zh-CN
-      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
-      - ELASTICSEARCH_PASSWORD="${ELASTICSEARCH_PASSWORD}"
-    ports:
-      - ${KIBANA_PORT}:5601
-    networks:
-      backend:
-        ipv4_address: ${KIBANA_IP}
-
 networks:
   backend:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: ${SUBNET}
+    external: true

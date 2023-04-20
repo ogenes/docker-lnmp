@@ -16,7 +16,8 @@ RUN apt-get update \
     vim \
     wget \
     net-tools \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+
 
 # 更改权限
 RUN mkdir /var/www \
