@@ -22,6 +22,7 @@ x-hosts: &hosts
     - esb-base.local.55haitao.com:${NGINX_IP}
     - esb-utils.local.55haitao.com:${NGINX_IP}
     - esb-api.local.55haitao.com:${NGINX_IP}
+    - esb-medium.local.55haitao.com:${NGINX_IP}
     - cas.dev.com:${NGINX_IP}
     - permission.dev.com:${NGINX_IP}
 
