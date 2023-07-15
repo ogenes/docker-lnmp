@@ -28,6 +28,27 @@ x-hosts: &hosts
 
 services:
   ### NGINX ##############################################################################
+  openresty:
+    build: ./openresty
+    container_name: openresty
+    privileged: true
+    ports:
+      - 8880:80
+      - 8443:443
+    restart: always
+    volumes:
+      # nginx默认配置文件
+      - ./openresty/nginx.conf:/etc/nginx/nginx.conf
+      - ./openresty/conf.d:/etc/nginx/conf.d
+      - ./openresty/lua.d:/etc/nginx/lua.d
+      - ./openresty/ssl:/etc/nginx/ssl
+      - ${WEB_ROOT_PATH}:/var/www/
+      - ./logs/openresty/:/var/log/nginx/
+    networks:
+      backend:
+        ipv4_address: ${OPENRESTY_IP}
+
+  ### NGINX ##############################################################################
   nginx:
     build: ./nginx
     container_name: nginx
