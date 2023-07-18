@@ -26,6 +26,7 @@ RUN apt-get update \
     zlib1g-dev \
     libxml2-dev \
     libbz2-dev \
+    librdkafka-dev \
     graphviz \
     git \
     vim \
@@ -89,6 +90,11 @@ fi
 ARG EXT_SWOOLED
 RUN if $EXT_SWOOLED; then \
     pecl install -o -f swoole && docker-php-ext-enable swoole; \
+fi
+
+ARG EXT_KAFKA
+RUN if EXT_KAFKA; then \
+    pecl install -o -f rdkafka && docker-php-ext-enable rdkafka; \
 fi
 
 RUN rm -rf /tmp/pear

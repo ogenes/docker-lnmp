@@ -338,10 +338,11 @@ services:
       args:
         - EXT_GD=true
         - EXT_REDIS=true
-        - EXT_GRPC=true
-        - EXT_PROTOBUF=true
-        - EXT_MEMCACHED=true
-        - EXT_SWOOLED=true
+        - EXT_GRPC=false
+        - EXT_PROTOBUF=false
+        - EXT_MEMCACHED=false
+        - EXT_SWOOLED=false
+        - EXT_KAFKA=true
     container_name: php81
     privileged: true
     restart: always
