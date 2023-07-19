@@ -1,11 +1,5 @@
 local cjson = require("cjson")
 
--- JSON 字符串
-local json_str = '{"name": "John", "age": 30, "city": "New York"}'
-
--- 解析 JSON 字符串为 Lua 的 table
-local data = cjson.decode(json_str)
-
 -- 用户跟踪cookie名为__utrace
 local uid = ngx.var.cookie___utrace
 if not uid then
@@ -14,23 +8,28 @@ if not uid then
 end
 ngx.header['Set-Cookie'] = { '__utrace=' .. uid .. '; path=/' }
 
-local params = ngx.var.args
 -- base64解码
-local un_log = ''
+local logTable = {}
 if ngx.var.arg_log then
-    local tt = cjson.decode(ngx.decode_base64(ngx.var.arg_log))
-    un_log = tt.app
+    logTable = cjson.decode(ngx.decode_base64(ngx.var.arg_log))
+end
+
+local queryStr ='utrace=' .. uid
+if logTable then
+    for k,v in pairs(logTable) do
+        queryStr = queryStr .. '&' .. k .. '=' .. v
+    end
 end
 
 if ngx.var.arg_type == 'search' then
     -- 通过subrequest到/user_behavior_search记录日志，将参数和用户跟踪cookie带过去
-    ngx.location.capture('/user_behavior_search?' .. params .. '&utrace=' .. uid .. '&un_log=' .. un_log)
+    ngx.location.capture('/user_behavior_search?' .. 'type=' .. ngx.var.arg_type .. '&' .. queryStr)
 elseif ngx.var.arg_type == 'click' then
     -- 通过subrequest到/user_behavior_click，将参数和用户跟踪cookie带过去
-    ngx.location.capture('/user_behavior_click?' .. params .. '&utrace=' .. uid .. '&un_log=' .. un_log)
+    ngx.location.capture('/user_behavior_click?' .. 'type=' .. ngx.var.arg_type .. '&' .. queryStr)
 elseif ngx.var.arg_type == 'browsing' then
     -- 通过subrequest到/user_behavior_browsing，将参数和用户跟踪cookie带过去
-    ngx.location.capture('/user_behavior_browsing?' .. params .. '&utrace=' .. uid .. '&un_log=' .. un_log)
+    ngx.location.capture('/user_behavior_browsing?' .. 'type=' .. ngx.var.arg_type .. '&' .. queryStr)
 else
-    ngx.location.capture('/user_behavior?' .. params .. '&utrace=' .. uid .. '&un_log=' .. un_log)
+    ngx.location.capture('/user_behavior?' .. 'type=' .. ngx.var.arg_type .. '&' .. queryStr)
 end
