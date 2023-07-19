@@ -43,7 +43,8 @@ services:
       - ./openresty/lua.d:/etc/nginx/lua.d
       - ./openresty/ssl:/etc/nginx/ssl
       - ${WEB_ROOT_PATH}:/var/www/
-      - ./logs/openresty/:/var/log/nginx/
+      - ./logs/openresty/nginx/:/data/log//nginx/
+      - ./logs/openresty/user_log/:/data/user_log/
     networks:
       backend:
         ipv4_address: ${OPENRESTY_IP}
