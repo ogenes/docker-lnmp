@@ -18,6 +18,8 @@ logTable["utrace"] = uid
 logTable["remote_addr"] = ngx.var.remote_addr
 logTable["request_method"] = ngx.var.request_method
 logTable["host"] = ngx.var.host
+logTable["x_forwarded_for"] = ngx.var.proxy_add_x_forwarded_for
+logTable["hostname"] = ngx.var.hostname
 local queryStr =cjson.encode(logTable)
 
 if ngx.var.arg_type == 'search' then
