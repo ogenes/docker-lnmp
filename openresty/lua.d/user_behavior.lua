@@ -14,22 +14,21 @@ if ngx.var.arg_log then
     logTable = cjson.decode(ngx.decode_base64(ngx.var.arg_log))
 end
 
-local queryStr ='utrace=' .. uid
-if logTable then
-    for k,v in pairs(logTable) do
-        queryStr = queryStr .. '&' .. k .. '=' .. v
-    end
-end
+logTable["utrace"] = uid
+logTable["remote_addr"] = ngx.var.remote_addr
+logTable["request_method"] = ngx.var.request_method
+logTable["host"] = ngx.var.host
+local queryStr =cjson.encode(logTable)
 
 if ngx.var.arg_type == 'search' then
     -- 通过subrequest到/user_behavior_search记录日志，将参数和用户跟踪cookie带过去
-    ngx.location.capture('/user_behavior_search?' .. 'type=' .. ngx.var.arg_type .. '&' .. queryStr)
+    ngx.location.capture('/user_behavior_search?' .. 'type=' .. ngx.var.arg_type .. '&query_str=' .. queryStr)
 elseif ngx.var.arg_type == 'click' then
     -- 通过subrequest到/user_behavior_click，将参数和用户跟踪cookie带过去
-    ngx.location.capture('/user_behavior_click?' .. 'type=' .. ngx.var.arg_type .. '&' .. queryStr)
+    ngx.location.capture('/user_behavior_click?' .. 'type=' .. ngx.var.arg_type .. '&query_str=' .. queryStr)
 elseif ngx.var.arg_type == 'browsing' then
     -- 通过subrequest到/user_behavior_browsing，将参数和用户跟踪cookie带过去
-    ngx.location.capture('/user_behavior_browsing?' .. 'type=' .. ngx.var.arg_type .. '&' .. queryStr)
+    ngx.location.capture('/user_behavior_browsing?' .. 'type=' .. ngx.var.arg_type .. '&query_str=' .. queryStr)
 else
-    ngx.location.capture('/user_behavior?' .. 'type=' .. ngx.var.arg_type .. '&' .. queryStr)
+    ngx.location.capture('/user_behavior?' .. 'type=' .. ngx.var.arg_type .. '&query_str=' .. queryStr)
 end
