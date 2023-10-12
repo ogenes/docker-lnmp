@@ -4,26 +4,6 @@ version: '3.8'
 x-hosts: &hosts
   extra_hosts:
     - default.dev.com:${NGINX_IP}
-    - ad.local.55haitao.com:${NGINX_IP}
-    - permission.local.55haitao.com:${NGINX_IP}
-    - store.local.55haitao.com:${NGINX_IP}
-    - common.local.55haitao.com:${NGINX_IP}
-    - maxrebates.local.55haitao.com:${NGINX_IP}
-    - htapi.local.55haitao.com:${NGINX_IP}
-    - affiliate.local.55haitao.com:${NGINX_IP}
-    - sys.local.55haitao.com:${NGINX_IP}
-    - appv6.local.55haitao.com:${NGINX_IP}
-    - dmp.local.55haitao.com:${NGINX_IP}
-    - gocashback.local.55haitao.com:${NGINX_IP}
-    - hub.local.55haitao.com:${NGINX_IP}
-    - cas.local.55haitao.com:${NGINX_IP}
-    - finance-api.local.55haitao.com:${NGINX_IP}
-    - esb-user.local.55haitao.com:${NGINX_IP}
-    - esb-base.local.55haitao.com:${NGINX_IP}
-    - esb-utils.local.55haitao.com:${NGINX_IP}
-    - esb-api.local.55haitao.com:${NGINX_IP}
-    - cas.dev.com:${NGINX_IP}
-    - permission.dev.com:${NGINX_IP}
 
 services:
   ### NGINX ##############################################################################
@@ -105,7 +85,7 @@ services:
         - EXT_REDIS=true
         - EXT_GRPC=false
         - EXT_PROTOBUF=false
-        - EXT_MEMCACHED=true
+        - EXT_MEMCACHED=false
         - EXT_SWOOLED=false
     container_name: php56
     privileged: true
@@ -140,7 +120,7 @@ services:
         - EXT_REDIS=true
         - EXT_GRPC=true
         - EXT_PROTOBUF=false
-        - EXT_MEMCACHED=true
+        - EXT_MEMCACHED=false
         - EXT_SWOOLED=false
     container_name: php71
     privileged: true
@@ -175,7 +155,7 @@ services:
         - EXT_REDIS=true
         - EXT_GRPC=false
         - EXT_PROTOBUF=false
-        - EXT_MEMCACHED=true
+        - EXT_MEMCACHED=false
         - EXT_SWOOLED=false
     container_name: php72
     privileged: true
@@ -210,7 +190,7 @@ services:
         - EXT_REDIS=true
         - EXT_GRPC=false
         - EXT_PROTOBUF=false
-        - EXT_MEMCACHED=true
+        - EXT_MEMCACHED=false
         - EXT_SWOOLED=false
     container_name: php73
     privileged: true
@@ -243,10 +223,10 @@ services:
       args:
         - EXT_GD=true
         - EXT_REDIS=true
-        - EXT_GRPC=true
-        - EXT_PROTOBUF=true
-        - EXT_MEMCACHED=true
-        - EXT_SWOOLED=true
+        - EXT_GRPC=false
+        - EXT_PROTOBUF=false
+        - EXT_MEMCACHED=false
+        - EXT_SWOOLED=false
     container_name: php74
     privileged: true
     restart: always
@@ -282,7 +262,7 @@ services:
         - EXT_REDIS=true
         - EXT_GRPC=false
         - EXT_PROTOBUF=false
-        - EXT_MEMCACHED=true
+        - EXT_MEMCACHED=false
         - EXT_SWOOLED=false
     container_name: php80
     privileged: true
@@ -316,10 +296,10 @@ services:
       args:
         - EXT_GD=true
         - EXT_REDIS=true
-        - EXT_GRPC=true
-        - EXT_PROTOBUF=true
-        - EXT_MEMCACHED=true
-        - EXT_SWOOLED=true
+        - EXT_GRPC=false
+        - EXT_PROTOBUF=false
+        - EXT_MEMCACHED=false
+        - EXT_SWOOLED=false
     container_name: php81
     privileged: true
     restart: always
