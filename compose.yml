@@ -120,6 +120,29 @@ services:
       backend:
         ipv4_address: ${REDIS_IP}
 
+  clickhouse-server:
+    image: clickhouse/clickhouse-server
+    container_name: clickhouse-server
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    ports:
+      - 8123:8123
+      - 9000:9000
+      - 9004:9004
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./clickhouse-server:/etc/clickhouse-server
+      - ./data/ch/data:/var/lib/clickhouse/
+      - ./data/ch/user:/root/data/
+      - ./logs/ch/logs:/var/log/clickhouse-server/
+    restart: always
+    mem_limit: 2048m
+    networks:
+      backend:
+        ipv4_address: ${CLICKHOUSE_IP}
+
   php56:
     build:
       context: ./php56
