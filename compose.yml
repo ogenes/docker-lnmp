@@ -370,6 +370,43 @@ services:
     networks:
       backend:
         ipv4_address: ${PHP81_IP}
+  php82:
+    build:
+      context: ./php82
+      args:
+        - EXT_GD=true
+        - EXT_REDIS=true
+        - EXT_GRPC=true
+        - EXT_PROTOBUF=true
+        - EXT_MEMCACHED=true
+        - EXT_SWOOLED=true
+        - EXT_KAFKA=true
+    container_name: php82
+    privileged: true
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "9082:9082"
+      - "8882:8882"
+    #/etc/hosts
+    <<: *hosts
+    volumes:
+      # php 配置文件
+      - ./php82/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php82/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php82/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+      - ./id_rsa:/root/.ssh/id_rsa
+      # 项目代码
+      - ${WEB_ROOT_PATH}:/var/www/
+      # php-fpm日志
+      - ./logs/php81/:/var/log/php/
+      # 应用日志
+      - ./logs/app/:/data/log/
+    networks:
+      backend:
+        ipv4_address: ${PHP82_IP}
 
 networks:
   backend:
