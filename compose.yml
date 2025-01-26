@@ -300,6 +300,7 @@ services:
         - EXT_PROTOBUF=false
         - EXT_MEMCACHED=false
         - EXT_SWOOLED=false
+        - EXT_KAFKA=true
     container_name: php81
     privileged: true
     restart: always
@@ -326,7 +327,117 @@ services:
     networks:
       backend:
         ipv4_address: ${PHP81_IP}
-
+  php82:
+    build:
+      context: ./php82
+      args:
+        - EXT_GD=true
+        - EXT_REDIS=true
+        - EXT_GRPC=true
+        - EXT_PROTOBUF=true
+        - EXT_MEMCACHED=true
+        - EXT_SWOOLED=true
+        - EXT_KAFKA=true
+    container_name: php82
+    privileged: true
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "9082:9082"
+      - "8882:8882"
+    #/etc/hosts
+    <<: *hosts
+    volumes:
+      # php 配置文件
+      - ./php82/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php82/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php82/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+      - ./id_rsa:/root/.ssh/id_rsa
+      # 项目代码
+      - ${WEB_ROOT_PATH}:/var/www/
+      # php-fpm日志
+      - ./logs/php82/:/var/log/php/
+      # 应用日志
+      - ./logs/app/:/data/log/
+    networks:
+      backend:
+        ipv4_address: ${PHP82_IP}
+  php83:
+    build:
+      context: ./php83
+      args:
+        - EXT_GD=false
+        - EXT_REDIS=false
+        - EXT_GRPC=false
+        - EXT_PROTOBUF=false
+        - EXT_MEMCACHED=false
+        - EXT_SWOOLED=false
+        - EXT_KAFKA=false
+    container_name: php83
+    privileged: true
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "9083:9083"
+      - "8883:8883"
+    #/etc/hosts
+    <<: *hosts
+    volumes:
+      # php 配置文件
+      - ./php83/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php83/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php83/config/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+      - ./id_rsa:/root/.ssh/id_rsa
+      # 项目代码
+      - ${WEB_ROOT_PATH}:/var/www/
+      # php-fpm日志
+      - ./logs/php83/:/var/log/php/
+      # 应用日志
+      - ./logs/app/:/data/log/
+    networks:
+      backend:
+        ipv4_address: ${PHP83_IP}
+  php84:
+      build:
+        context: ./php84
+        args:
+          - EXT_GD=true
+          - EXT_REDIS=true
+          - EXT_GRPC=true
+          - EXT_PROTOBUF=true
+          - EXT_MEMCACHED=true
+          - EXT_SWOOLED=true
+          - EXT_KAFKA=true
+      container_name: php84
+      privileged: true
+      restart: always
+      cap_add:
+        - SYS_PTRACE
+      ports:
+        - "9084:9084"
+        - "8884:8884"
+      #/etc/hosts
+      <<: *hosts
+      volumes:
+        # php 配置文件
+        - ./php84/config/php.ini:/usr/local/etc/php/php.ini
+        - ./php84/config/php-fpm.conf:/usr/local/etc/php-fpm.conf
+        - ./php84/config/php-fpm.d:/usr/local/etc/php-fpm.d
+        - ./id_rsa.pub:/root/.ssh/id_rsa.pub
+        - ./id_rsa:/root/.ssh/id_rsa
+        # 项目代码
+        - ${WEB_ROOT_PATH}:/var/www/
+        # php-fpm日志
+        - ./logs/php84/:/var/log/php/
+        # 应用日志
+        - ./logs/app/:/data/log/
+      networks:
+        backend:
+          ipv4_address: ${PHP84_IP}
 networks:
   backend:
     external: true

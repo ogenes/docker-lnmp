@@ -1,12 +1,11 @@
-ARG VERSION
-FROM php:8.0-fpm
+FROM php:8.2.14-fpm
 
 LABEL maintainer="ogenes.yi@gmail.com"
 
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get update --fix-missing \
+RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     apt-utils \
     curl \
@@ -27,6 +26,7 @@ RUN apt-get update --fix-missing \
     zlib1g-dev \
     libxml2-dev \
     libbz2-dev \
+    librdkafka-dev \
     graphviz \
     git \
     vim \
@@ -38,6 +38,7 @@ RUN apt-get update --fix-missing \
     openssh-client \
     subversion \
   && rm -rf /var/lib/apt/lists/*
+
 
 RUN docker-php-ext-configure bcmath --enable-bcmath \
     && docker-php-ext-configure pcntl --enable-pcntl \
@@ -58,6 +59,7 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
         exif \
   && docker-php-ext-install opcache \
   && docker-php-ext-enable opcache
+
 
 ARG EXT_GD
 RUN if $EXT_GD; then \
@@ -90,9 +92,13 @@ RUN if $EXT_SWOOLED; then \
     pecl install -o -f swoole && docker-php-ext-enable swoole; \
 fi
 
+ARG EXT_KAFKA
+RUN if EXT_KAFKA; then \
+    pecl install -o -f rdkafka && docker-php-ext-enable rdkafka; \
+fi
+
 RUN rm -rf /tmp/pear
 
-# 安装 Composer
 ENV COMPOSER_HOME /var/www/.composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
@@ -105,7 +111,7 @@ RUN mkdir -p /data/log && chown -R www-data:www-data /data/log
 
 RUN mkdir -p $COMPOSER_HOME/cache
 
-RUN ln -snf /usr/local/bin/php /usr/local/bin/php80
+RUN ln -snf /usr/local/bin/php /usr/local/bin/php82
 
 VOLUME $COMPOSER_HOME
 WORKDIR /var/www

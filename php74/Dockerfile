@@ -38,6 +38,8 @@ RUN apt-get update \
     openssh-server \
     openssh-client \
     subversion \
+    libc-client-dev \
+    libkrb5-dev  \
   && rm -rf /var/lib/apt/lists/*
 
 
@@ -48,6 +50,7 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
     && docker-php-ext-configure mbstring --enable-mbstring \
     && docker-php-ext-configure soap --enable-soap \
     && docker-php-ext-configure exif --enable-exif \
+    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install \
         bcmath \
         intl \
@@ -59,6 +62,7 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
         zip \
         soap \
         exif \
+        imap \
   && docker-php-ext-install opcache \
   && docker-php-ext-enable opcache
 

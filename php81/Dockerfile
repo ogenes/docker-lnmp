@@ -5,7 +5,7 @@ LABEL maintainer="ogenes.yi@gmail.com"
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get update \
+RUN apt-get update --fix-missing \
   && apt-get install -y --no-install-recommends \
     apt-utils \
     curl \
@@ -26,6 +26,7 @@ RUN apt-get update \
     zlib1g-dev \
     libxml2-dev \
     libbz2-dev \
+    librdkafka-dev \
     graphviz \
     git \
     vim \
@@ -89,6 +90,11 @@ fi
 ARG EXT_SWOOLED
 RUN if $EXT_SWOOLED; then \
     pecl install -o -f swoole && docker-php-ext-enable swoole; \
+fi
+
+ARG EXT_KAFKA
+RUN if EXT_KAFKA; then \
+    pecl install -o -f rdkafka && docker-php-ext-enable rdkafka; \
 fi
 
 RUN rm -rf /tmp/pear
